@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Uuid, ForeignKey, TIMESTAMP
 from uuid import UUID, uuid4
 from database import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
 class Cart(Base):
@@ -17,6 +17,7 @@ class Cart(Base):
     user_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("users.id"),
+        unique=True,
         nullable=False
     )
 
@@ -32,4 +33,7 @@ class Cart(Base):
         onupdate=datetime.utcnow,
         nullable=False
     )
-    
+
+    user: Mapped["User"] = relationship(back_populates="carts")
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="carts")
+    cart_items: Mapped[list["CartItem"]] = relationship(back_populates="cart")

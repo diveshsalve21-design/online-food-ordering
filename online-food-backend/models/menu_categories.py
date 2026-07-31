@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Uuid, ForeignKey, Integer
 from uuid import UUID, uuid4
 from database import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 class MenuCategory(Base):
 
@@ -13,7 +13,7 @@ class MenuCategory(Base):
         default=uuid4
     )
 
-    resturant_id: Mapped[UUID] = mapped_column(
+    restaurant_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("restaurants.id"),
         nullable=False
@@ -28,3 +28,6 @@ class MenuCategory(Base):
         Integer,
         nullable=False
     )
+
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="categories")
+    menu_items: Mapped[list["MenuItem"]] = relationship(back_populates="category")

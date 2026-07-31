@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 
 from sqlalchemy import Float, Integer, ForeignKey, Uuid
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -42,3 +42,6 @@ class OrderItem(Base):
         Float,
         nullable=False,
     )
+
+    order: Mapped["Order"] = relationship(back_populates="order_items")
+    menu_item: Mapped["MenuItem"] = relationship(back_populates="order_items")

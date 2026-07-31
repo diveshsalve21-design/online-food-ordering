@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Boolean, Uuid, DateTime, ForeignKey, TIME
 from uuid import UUID, uuid4
 from datetime import datetime
 from database import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 class Restaurant(Base):
 
@@ -63,4 +63,12 @@ class Restaurant(Base):
         default=datetime.utcnow,
         nullable=False
     )
-    
+
+    owner: Mapped["User"] = relationship(back_populates="restaurants")
+    categories: Mapped[list["MenuCategory"]] = relationship(back_populates="restaurant")
+    menu_items: Mapped[list["MenuItem"]] = relationship(back_populates="restaurant")
+    orders: Mapped[list["Order"]] = relationship(back_populates="restaurant")
+    carts: Mapped[list["Cart"]] = relationship(back_populates="restaurant")
+    coupons: Mapped[list["Coupon"]] = relationship(back_populates="restaurant")
+    reviews: Mapped[list["Review"]] = relationship(back_populates="restaurant")
+    favorites: Mapped[list["Favorite"]] = relationship(back_populates="restaurant")

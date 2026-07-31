@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 
 from sqlalchemy import Boolean, Float, ForeignKey, Uuid, Enum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 from models.Enums import VehicleType
@@ -19,6 +19,7 @@ class DeliveryPartner(Base):
     user_id: Mapped[UUID] = mapped_column(
         Uuid,
         ForeignKey("users.id"),
+        unique=True,
         nullable=False,
     )
 
@@ -48,3 +49,6 @@ class DeliveryPartner(Base):
         default=0.0,
         nullable=False,
     )
+
+    user: Mapped["User"] = relationship(back_populates="delivery_partner")
+    deliveries: Mapped[list["Delivery"]] = relationship(back_populates="delivery_partner")

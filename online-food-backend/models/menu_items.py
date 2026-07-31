@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Boolean, Uuid,Text, ForeignKey, Numeric
 from uuid import UUID, uuid4
 from database import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 class MenuItem(Base):
 
@@ -56,3 +56,10 @@ class MenuItem(Base):
         String(255),
         nullable=True
     )
+
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="menu_items")
+    category: Mapped["MenuCategory"] = relationship(back_populates="menu_items")
+    variants: Mapped[list["ItemVariant"]] = relationship(back_populates="menu_item")
+    addons: Mapped[list["ItemAddon"]] = relationship(back_populates="menu_item")
+    cart_items: Mapped[list["CartItem"]] = relationship(back_populates="menu_item")
+    order_items: Mapped[list["OrderItem"]] = relationship(back_populates="menu_item")

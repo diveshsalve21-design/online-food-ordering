@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 
 from sqlalchemy import String, Float, ForeignKey, Uuid
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -30,3 +30,5 @@ class ItemAddon(Base):
         Float,
         nullable=False,
     )
+
+    menu_item: Mapped["MenuItem"] = relationship(back_populates="addons")

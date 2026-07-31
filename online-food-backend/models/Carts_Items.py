@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 
 from sqlalchemy import String, Integer, ForeignKey, Uuid
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -37,3 +37,6 @@ class CartItem(Base):
         String(255),
         nullable=True,
     )
+
+    cart: Mapped["Cart"] = relationship(back_populates="cart_items")
+    menu_item: Mapped["MenuItem"] = relationship(back_populates="cart_items")

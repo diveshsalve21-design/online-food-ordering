@@ -1,6 +1,6 @@
 from database import Base
 from sqlalchemy import UUID, String, ForeignKey, Uuid, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import UUID,uuid4
 
 class Address(Base):
@@ -49,6 +49,8 @@ class Address(Base):
         default=False,
     )
 
+    user: Mapped["User"] = relationship(back_populates="addresses")
+    orders: Mapped[list["Order"]] = relationship(back_populates="delivery_address")
 
 
     

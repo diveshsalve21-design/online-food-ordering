@@ -1,14 +1,15 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, Uuid
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import DateTime, ForeignKey, Uuid, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
 
 class Favorite(Base):
     __tablename__ = "favorites"
+    __table_args__ = (UniqueConstraint("user_id", "restaurant_id", name="uq_favorites_user_restaurant"),)
 
     id: Mapped[UUID] = mapped_column(
         Uuid,
@@ -33,3 +34,6 @@ class Favorite(Base):
         default=datetime.utcnow,
         nullable=False,
     )
+
+    user: Mapped["User"] = relationship(back_populates="favorites")
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="favorites")

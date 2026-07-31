@@ -1,6 +1,6 @@
 from database import Base, engine
 from models.users import User
-from models.coupons import Coupon
+from models.coupon import Coupon
 from models.address import Address
 from models.restaurants import Restaurant
 from models.menu_categories import MenuCategory 

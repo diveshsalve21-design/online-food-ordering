@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from sqlalchemy import String, Float, DateTime, ForeignKey, Uuid, Enum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 from models.Enums import PaymentMethod, PaymentStatus
@@ -20,6 +20,7 @@ class Payment(Base):
     order_id: Mapped[UUID] = mapped_column(
         Uuid,
         ForeignKey("orders.id"),
+        unique=True,
         nullable=False,
     )
 
@@ -49,3 +50,5 @@ class Payment(Base):
         DateTime,
         nullable=True,
     )
+
+    order: Mapped["Order"] = relationship(back_populates="payment")

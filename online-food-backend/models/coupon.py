@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from sqlalchemy import String,Boolean,DateTime,Float,ForeignKey,Enum,Uuid
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 from models.Enums import DiscountType
@@ -11,9 +11,8 @@ from models.Enums import DiscountType
 class Coupon(Base):
     __tablename__ = "coupons"
 
-    user_id: Mapped[UUID] = mapped_column(
+    id: Mapped[UUID] = mapped_column(
         Uuid,
-        ForeignKey("users.id"),
         primary_key=True,
         default=uuid4,
     )
@@ -55,3 +54,6 @@ class Coupon(Base):
         default=True,
         nullable=False,
     )
+
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="coupons")
+    orders: Mapped[list["Order"]] = relationship(back_populates="coupon")

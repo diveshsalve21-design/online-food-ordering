@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlalchemy import Float,DateTime,ForeignKey,Uuid,Enum
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 from models.Enums import OrderStatus
@@ -38,7 +38,7 @@ class Order(Base):
 
     coupon_id: Mapped[UUID] = mapped_column(
         Uuid,
-        ForeignKey("coupons.user_id"),
+        ForeignKey("coupons.id"),
         nullable=True,
     )
 
@@ -75,3 +75,12 @@ class Order(Base):
         default=datetime.utcnow,
         nullable=False,
     )
+
+    user: Mapped["User"] = relationship(back_populates="orders")
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="orders")
+    delivery_address: Mapped["Address"] = relationship(back_populates="orders")
+    coupon: Mapped["Coupon | None"] = relationship(back_populates="orders")
+    order_items: Mapped[list["OrderItem"]] = relationship(back_populates="order")
+    payment: Mapped["Payment | None"] = relationship(back_populates="order", uselist=False)
+    delivery: Mapped["Delivery | None"] = relationship(back_populates="order", uselist=False)
+    reviews: Mapped[list["Review"]] = relationship(back_populates="order")

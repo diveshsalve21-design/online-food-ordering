@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlalchemy import String,Integer,DateTime,ForeignKey,Uuid
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -32,6 +32,7 @@ class Review(Base):
     order_id: Mapped[UUID] = mapped_column(
         Uuid,
         ForeignKey("orders.id"),
+        unique=True,
         nullable=False,
     )
 
@@ -50,3 +51,7 @@ class Review(Base):
         default=datetime.utcnow,
         nullable=False,
     )
+
+    user: Mapped["User"] = relationship(back_populates="reviews")
+    restaurant: Mapped["Restaurant"] = relationship(back_populates="reviews")
+    order: Mapped["Order"] = relationship(back_populates="reviews")
