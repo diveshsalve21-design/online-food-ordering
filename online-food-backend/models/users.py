@@ -1,9 +1,11 @@
-from sqlalchemy import Column, String, Boolean, Uuid, DateTime
+from sqlalchemy import Column, String, Boolean, Uuid, DateTime, Enum
+
 
 from uuid import UUID, uuid4
 from datetime import datetime
 from database import Base 
 from sqlalchemy.orm import Mapped, mapped_column
+from models.Enums import UserRole
 
 class User(Base):
     __tablename__ = "users"
@@ -36,11 +38,8 @@ class User(Base):
         nullable=False
     )
 
-    role: Mapped[str] = mapped_column(
-        String(20),
-        default="customer",
-        nullable=False
-    )
+    role:Mapped[UserRole] = mapped_column(Enum(UserRole),default=UserRole.CUSTOMER)
+
 
     is_active: Mapped[bool] = mapped_column(
         Boolean,

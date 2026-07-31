@@ -1,0 +1,44 @@
+from uuid import UUID, uuid4
+
+from sqlalchemy import Float, Integer, ForeignKey, Uuid
+from sqlalchemy.orm import Mapped, mapped_column
+
+from database import Base
+
+
+class OrderItem(Base):
+    __tablename__ = "order_items"
+
+    id: Mapped[UUID] = mapped_column(
+        Uuid,
+        primary_key=True,
+        default=uuid4,
+    )
+
+    order_id: Mapped[UUID] = mapped_column(
+        Uuid,
+        ForeignKey("orders.id"),
+        nullable=False,
+    )
+
+    menu_item_id: Mapped[UUID] = mapped_column(
+        Uuid,
+        ForeignKey("menu_items.id"),
+        nullable=False,
+    )
+
+    quantity: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=1,
+    )
+
+    unit_price_snapshot: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+
+    subtotal: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
