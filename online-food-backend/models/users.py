@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 from sqlalchemy import Column, String, Boolean, Uuid, DateTime, Enum
 
+=======
+from sqlalchemy import Enum as SQLAlchemyEnum, String, Boolean, Uuid, DateTime
+>>>>>>> 8875ae0 (Save my local changes)
 
 from uuid import UUID, uuid4
 from datetime import datetime
@@ -38,8 +42,16 @@ class User(Base):
         nullable=False
     )
 
+<<<<<<< HEAD
     role:Mapped[UserRole] = mapped_column(Enum(UserRole),default=UserRole.CUSTOMER)
 
+=======
+    role: Mapped[UserRole] = mapped_column(
+        SQLAlchemyEnum(UserRole),
+        default=UserRole.CUSTOMER,
+        nullable=False
+    )
+>>>>>>> 8875ae0 (Save my local changes)
 
     is_active: Mapped[bool] = mapped_column(
         Boolean,

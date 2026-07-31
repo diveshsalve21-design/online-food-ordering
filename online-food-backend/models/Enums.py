@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from enum import Enum 
 
 class UserRole (str,Enum):
@@ -45,3 +46,11 @@ class VehicleType(str, Enum):
     SCOOTER = "Scooter"
     BICYCLE = "Bicycle"
     CAR = "Car"
+=======
+from enum import Enum
+
+class UserRole(Enum):
+    ADMIN = "admin"
+    CUSTOMER = "customer"
+    OWNER = "owner"
+>>>>>>> 8875ae0 (Save my local changes)
