@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine,text
-from pydantic import BaseSettings
 from sqlalchemy.orm import declarative_base
 
 load_dotenv()
