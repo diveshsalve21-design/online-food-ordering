@@ -12,6 +12,10 @@ from models.Carts_Items import CartItem
 from models.Order_items import OrderItem
 from models.Orders import Order
 from models.Reviews import Review
+from models.deliveries import Delivery
+from models.delivery_partners import DeliveryPartner
+from models.favorites import Favorite
+from models.payments import Payment
 Base.metadata.create_all(bind=engine)
 
 print("Tables created successfully!")
