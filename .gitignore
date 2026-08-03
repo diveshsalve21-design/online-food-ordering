@@ -12,6 +12,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+!online-food-frontend/src/lib/
+!online-food-frontend/src/lib/**
 lib64/
 parts/
 sdist/
@@ -37,6 +39,7 @@ htmlcov/
 .env
 .env.local
 .env.*
+!online-food-backend/.env.example
 .venv/
 venv/
 ENV/

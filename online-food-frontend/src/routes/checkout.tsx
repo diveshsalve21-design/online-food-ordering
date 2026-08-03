@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, CreditCard, MapPin, Truck } from "lucide-react";
+import { useState } from "react";
 import { useCart, inr } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,8 @@ export const Route = createFileRoute("/checkout")({
 });
 
 function Checkout() {
-  const { items, subtotal, gst, delivery, total } = useCart();
+  const { items, subtotal, gst, delivery, total, clear } = useCart();
+  const [placed, setPlaced] = useState(false);
   return (
     <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-16 pt-8 sm:px-6 lg:grid-cols-[1.4fr_1fr]">
       <div className="space-y-6">
@@ -62,9 +64,10 @@ function Checkout() {
               <span>Total</span><span>{inr(total)}</span>
             </div>
           </div>
-          <Button className="mt-5 w-full rounded-xl" style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}>
+          <Button disabled={items.length === 0 || placed} onClick={() => { clear(); setPlaced(true); }} className="mt-5 w-full rounded-xl" style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}>
             <CheckCircle2 className="mr-2 h-4 w-4" /> Place order
           </Button>
+          {placed && <p className="mt-3 text-center text-sm text-[color:var(--veg)]">Order placed! You can track it from Orders.</p>}
         </div>
       </div>
     </div>

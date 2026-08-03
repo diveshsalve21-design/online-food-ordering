@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Filter, Search, Timer } from "lucide-react";
 import { categories, dishes } from "@/lib/data";
+import { getMenuItems, type ApiMenuItem } from "@/lib/api";
+import pizza from "@/assets/dish-pizza.jpg";
+import burger from "@/assets/dish-burger.jpg";
+import biryani from "@/assets/dish-biryani.jpg";
+import noodles from "@/assets/dish-noodles.jpg";
+import salad from "@/assets/dish-salad.jpg";
+import dessert from "@/assets/dish-dessert.jpg";
 import { useCart, inr } from "@/lib/cart";
 import { VegDot } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -18,16 +25,30 @@ function MenuPage() {
   const [cat, setCat] = useState<string>("all");
   const [q, setQ] = useState("");
   const { add } = useCart();
+  const [serverDishes, setServerDishes] = useState<typeof dishes | null>(null);
+  const [connectionNotice, setConnectionNotice] = useState("");
+
+  useEffect(() => {
+    const images: Record<string, string> = { pizza, burger, biryani, noodles, salad, dessert };
+    getMenuItems().then((items: ApiMenuItem[]) => {
+      setServerDishes(items.filter(item => item.is_available).map(item => ({
+        id: item.id, name: item.name, desc: item.description || "Freshly prepared for you.", price: Number(item.price), veg: item.is_vegetarian,
+        category: item.category || "pizza", calories: item.calories || 0, time: item.time || 20, image: images[item.image_key || ""] || pizza,
+      })));
+      setConnectionNotice("Live menu loaded from FoodFusion API");
+    }).catch(() => setConnectionNotice("Backend is offline — showing the built-in menu."));
+  }, []);
+  const menuDishes = serverDishes ?? dishes;
 
   const list = useMemo(() => {
-    return dishes.filter((d) => {
+    return menuDishes.filter((d) => {
       if (mode === "veg" && !d.veg) return false;
       if (mode === "nonveg" && d.veg) return false;
       if (cat !== "all" && d.category !== cat) return false;
       if (q && !d.name.toLowerCase().includes(q.toLowerCase())) return false;
       return true;
     });
-  }, [mode, cat, q]);
+  }, [mode, cat, q, menuDishes]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6">
@@ -49,6 +70,7 @@ function MenuPage() {
           </div>
           <Button variant="ghost" className="rounded-full border border-white/10"><Filter className="mr-2 h-4 w-4" /> Filters</Button>
         </div>
+        {connectionNotice && <p className="mt-3 text-xs text-muted-foreground">{connectionNotice}</p>}
         <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto pb-1">
           <CatChip label="All" active={cat === "all"} onClick={() => setCat("all")} />
           {categories.map((c) => (

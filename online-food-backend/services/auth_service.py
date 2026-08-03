@@ -2,6 +2,7 @@
 Authentication service for JWT token management
 """
 from datetime import datetime, timedelta
+import os
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -15,7 +16,7 @@ from models.users import User
 from schemas.users import UserResponse
 
 # Configuration
-SECRET_KEY = "your-secret-key-change-in-production"  # Should be from environment variable
+SECRET_KEY = os.getenv("SECRET_KEY", "development-only-secret-change-me")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7

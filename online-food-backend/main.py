@@ -18,8 +18,16 @@ from routers.restaurants import router as restaurants_router
 from routers.reviews import router as reviews_router
 from routers.users import router as users_router
 from routers.auth import router as auth_router
+from routers.catalog import router as catalog_router
+from database import Base, engine
+import models  # Registers every SQLAlchemy model before tables are created.
 
 app = FastAPI()
+
+@app.on_event("startup")
+def create_database_tables() -> None:
+    """Make the development app runnable without a separate migration step."""
+    Base.metadata.create_all(bind=engine)
 
 # CORS middleware for frontend connection
 app.add_middleware(
@@ -31,6 +39,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(catalog_router)
 app.include_router(users_router)
 app.include_router(addresses_router)
 app.include_router(restaurants_router)

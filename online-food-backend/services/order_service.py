@@ -9,7 +9,7 @@ from fastapi import HTTPException, status
 from models.Orders import Order
 from models.Order_items import OrderItem
 from models.carts import Cart
-from models.cart_items import CartItem
+from models.Carts_Items import CartItem
 from models.payments import Payment
 from models.Enums import OrderStatus, PaymentStatus
 

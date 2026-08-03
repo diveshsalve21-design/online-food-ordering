@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException, status
 
 from models.carts import Cart
-from models.cart_items import CartItem
+from models.Carts_Items import CartItem
 from models.menu_items import MenuItem
 from schemas.carts import CartCreate, CartUpdate
 from schemas.cart_items import CartItemCreate

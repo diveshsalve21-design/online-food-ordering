@@ -31,7 +31,6 @@ class UserResponse(Schema):
     full_name: str
     email: str
     phone: str
-    password_hash: str
     role: UserRole
     is_active: bool
     created_at: datetime
