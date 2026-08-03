@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routers.addresses import router as addresses_router
 from routers.carts import router as carts_router
 from routers.cart_items import router as cart_items_router
@@ -16,9 +17,20 @@ from routers.payments import router as payments_router
 from routers.restaurants import router as restaurants_router
 from routers.reviews import router as reviews_router
 from routers.users import router as users_router
+from routers.auth import router as auth_router
 
 app = FastAPI()
 
+# CORS middleware for frontend connection
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure this for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(addresses_router)
 app.include_router(restaurants_router)
@@ -38,6 +50,5 @@ app.include_router(favorites_router)
 app.include_router(reviews_router)
 
 @app.get("/")
-
 def home():
     return {"message": "Welcome to the Online Food Backend!"}
