@@ -19,20 +19,22 @@ from routers.reviews import router as reviews_router
 from routers.users import router as users_router
 from routers.auth import router as auth_router
 from routers.catalog import router as catalog_router
-from database import Base, engine
+from database import Base, engine, apply_migrations
+from db import get_db  # Re-exported for application-level dependency overrides.
 import models  # Registers every SQLAlchemy model before tables are created.
 
-app = FastAPI()
+app = FastAPI(title="Online Food Delivery Platform")
 
 @app.on_event("startup")
 def create_database_tables() -> None:
     """Make the development app runnable without a separate migration step."""
     Base.metadata.create_all(bind=engine)
+    apply_migrations()
 
 # CORS middleware for frontend connection
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure this for production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

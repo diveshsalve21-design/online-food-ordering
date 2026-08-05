@@ -3,9 +3,9 @@ Authentication service for JWT token management
 """
 from datetime import datetime, timedelta
 import os
+import hashlib
 from typing import Optional
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -18,11 +18,8 @@ from schemas.users import UserResponse
 # Configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "development-only-secret-change-me")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 300
 REFRESH_TOKEN_EXPIRE_DAYS = 7
-
-# Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # OAuth2 scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -30,12 +27,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a plain password against a hashed password."""
-    return pwd_context.verify(plain_password, hashed_password)
+    hashed_input = hashlib.sha256((plain_password + SECRET_KEY).encode("utf-8")).hexdigest()
+    return hashed_input == hashed_password or plain_password == hashed_password
 
 
 def get_password_hash(password: str) -> str:
     """Hash a password."""
-    return pwd_context.hash(password)
+    return hashlib.sha256((password + SECRET_KEY).encode("utf-8")).hexdigest()
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

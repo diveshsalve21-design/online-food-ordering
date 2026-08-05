@@ -19,9 +19,22 @@ def create_menu_items(payload: MenuItemCreate, db: Session = Depends(get_db)):
     return record
 
 
+from typing import Optional
+
 @router.get("/", response_model=list[MenuItemResponse])
-def list_menu_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return db.query(MenuItem).offset(skip).limit(limit).all()
+def list_menu_items(
+    restaurant_id: Optional[UUID] = None,
+    category_id: Optional[UUID] = None,
+    skip: int = 0, 
+    limit: int = 100, 
+    db: Session = Depends(get_db)
+):
+    query = db.query(MenuItem)
+    if restaurant_id:
+        query = query.filter(MenuItem.restaurant_id == restaurant_id)
+    if category_id:
+        query = query.filter(MenuItem.category_id == category_id)
+    return query.offset(skip).limit(limit).all()
 
 
 @router.get("/{record_id}", response_model=MenuItemResponse)

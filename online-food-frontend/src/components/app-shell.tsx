@@ -179,7 +179,7 @@ export function VegDot({ veg }: { veg: boolean }) {
 function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-white/10 bg-[color:var(--surface)]/60">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2">
             <div className="grid h-9 w-9 place-items-center rounded-xl" style={{ background: "var(--gradient-sunset)" }}>
@@ -191,7 +191,6 @@ function SiteFooter() {
             Craft-forward food delivery. Discover restaurants, plan meals with AI, earn rewards.
           </p>
         </div>
-        <FooterCol title="Company" links={["About", "Careers", "Contact", "Blog"]} />
         <FooterCol title="Support" links={["Privacy Policy", "Terms", "FAQs", "Help Center"]} />
         <div>
           <div className="text-sm font-semibold">Newsletter</div>

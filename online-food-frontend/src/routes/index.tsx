@@ -245,7 +245,7 @@ function FeaturedRestaurants({ list }: { list: typeof restaurants }) {
               </div>
               <div className="mt-4 flex gap-2">
                 <Button asChild size="sm" className="flex-1 rounded-xl" style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}>
-                  <Link to="/menu">View Menu</Link>
+                  <Link to="/menu" search={{ hotel: r.id }}>View Menu</Link>
                 </Button>
                 <Button size="sm" variant="ghost" className="rounded-xl border border-white/10">
                   <Heart className="mr-1 h-4 w-4" /> Save

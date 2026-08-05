@@ -11,11 +11,19 @@ class RestaurantCreate(BaseModel):
     owner_id: UUID
     name: str
     cuisine: str
-    fassai_license_Number: str
-    rating: float = 0.0
+    fassai_license_Number: Optional[str] = "FSSAI-10001"
+    rating: float = 4.5
     is_active: bool = True
-    open_at: datetime
-    close_at: datetime
+    open_at: Optional[datetime] = None
+    close_at: Optional[datetime] = None
+    image_url: Optional[str] = None
+    cover_image: Optional[str] = None
+    description: Optional[str] = None
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    delivery_time: Optional[str] = "25-35 min"
+    delivery_fee: Optional[float] = 2.99
+    min_order_amount: Optional[float] = 10.00
 
 
 class RestaurantUpdate(BaseModel):
@@ -27,6 +35,14 @@ class RestaurantUpdate(BaseModel):
     is_active: Optional[bool] = None
     open_at: Optional[datetime] = None
     close_at: Optional[datetime] = None
+    image_url: Optional[str] = None
+    cover_image: Optional[str] = None
+    description: Optional[str] = None
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    delivery_time: Optional[str] = None
+    delivery_fee: Optional[float] = None
+    min_order_amount: Optional[float] = None
 
 
 class RestaurantResponse(Schema):
@@ -34,9 +50,17 @@ class RestaurantResponse(Schema):
     owner_id: UUID
     name: str
     cuisine: str
-    fassai_license_Number: str
+    fassai_license_Number: Optional[str] = None
     rating: float
     is_active: bool
-    open_at: datetime
-    close_at: datetime
+    open_at: Optional[datetime] = None
+    close_at: Optional[datetime] = None
+    image_url: Optional[str] = None
+    cover_image: Optional[str] = None
+    description: Optional[str] = None
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    delivery_time: Optional[str] = "25-35 min"
+    delivery_fee: Optional[float] = 2.99
+    min_order_amount: Optional[float] = 10.00
     created_at: datetime

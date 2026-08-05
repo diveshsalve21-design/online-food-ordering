@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from models.Enums import UserRole
 from .base import Schema
@@ -15,6 +15,14 @@ class UserCreate(BaseModel):
     password_hash: str
     role: UserRole = UserRole.CUSTOMER
     is_active: bool = True
+
+    @field_validator("role", mode="before")
+    @classmethod
+    def accept_role_names(cls, value):
+        """Accept enum names (for example, ``CUSTOMER``) as API input too."""
+        if isinstance(value, str) and value.upper() in UserRole.__members__:
+            return UserRole[value.upper()]
+        return value
 
 
 class UserUpdate(BaseModel):

@@ -48,14 +48,57 @@ class Restaurant(Base):
         nullable=False
     )
 
-    open_at: Mapped[datetime] = mapped_column(
+    open_at: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        nullable=False
+        nullable=True
     )
 
-    close_at: Mapped[datetime] = mapped_column(
+    close_at: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        nullable=False
+        nullable=True
+    )
+
+    image_url: Mapped[str | None] = mapped_column(
+        String(500),
+        nullable=True
+    )
+
+    cover_image: Mapped[str | None] = mapped_column(
+        String(500),
+        nullable=True
+    )
+
+    description: Mapped[str | None] = mapped_column(
+        String(500),
+        nullable=True
+    )
+
+    address: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True
+    )
+
+    phone: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True
+    )
+
+    delivery_time: Mapped[str | None] = mapped_column(
+        String(50),
+        default="25-35 min",
+        nullable=True
+    )
+
+    delivery_fee: Mapped[float | None] = mapped_column(
+        Numeric(10, 2),
+        default=2.99,
+        nullable=True
+    )
+
+    min_order_amount: Mapped[float | None] = mapped_column(
+        Numeric(10, 2),
+        default=10.00,
+        nullable=True
     )
 
     created_at: Mapped[datetime] = mapped_column(
