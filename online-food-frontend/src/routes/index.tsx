@@ -4,7 +4,7 @@ import {
   ChevronRight, Clock, Flame, Gift, Heart, MapPin, Mic, Search, Sparkles, Star, Timer, Trophy, Users, Wallet, Zap,
 } from "lucide-react";
 import heroImg from "@/assets/hero-food.jpg";
-import { categories, dishes, restaurants } from "@/lib/data";
+import { categories, dishes, getFoodImageFallback, getRestaurantImageFallback, restaurants } from "@/lib/data";
 import { useCart, inr } from "@/lib/cart";
 import { VegDot } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -213,7 +213,7 @@ function FeaturedRestaurants({ list }: { list: typeof restaurants }) {
         {list.map((r) => (
           <article key={r.id} className="card-lift card-lift-hover group overflow-hidden rounded-3xl glass">
             <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={r.image} alt={r.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" width={800} height={500} />
+              <img src={r.image} alt={r.name} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = getRestaurantImageFallback(r.cuisine); }} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" width={800} height={500} />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent" />
               <Badge className="absolute left-3 top-3 rounded-full border-0 text-xs font-semibold" style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}>
                 {r.discount}
@@ -271,7 +271,7 @@ function Recommendations({ list }: { list: typeof dishes }) {
         {list.map((d) => (
           <article key={d.id} className="card-lift card-lift-hover overflow-hidden rounded-3xl glass">
             <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={d.image} alt={d.name} className="h-full w-full object-cover" loading="lazy" width={800} height={500} />
+              <img src={d.image} alt={d.name} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = getFoodImageFallback(d.category); }} className="h-full w-full object-cover" loading="lazy" width={800} height={500} />
               <div className="absolute left-3 top-3 flex items-center gap-2">
                 <span className="grid h-6 w-6 place-items-center rounded-md bg-black/50 backdrop-blur">
                   <VegDot veg={d.veg} />
@@ -359,7 +359,7 @@ function MealPlanner() {
             )}
             {plan.picks.map((d) => (
               <div key={d.id} className="flex gap-3 rounded-xl bg-white/5 p-3">
-                <img src={d.image} alt={d.name} className="h-14 w-14 rounded-lg object-cover" loading="lazy" />
+                <img src={d.image} alt={d.name} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = getFoodImageFallback(d.category); }} className="h-14 w-14 rounded-lg object-cover" loading="lazy" />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <VegDot veg={d.veg} />

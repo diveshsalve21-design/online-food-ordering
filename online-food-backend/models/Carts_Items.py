@@ -2,8 +2,13 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import String, Integer, ForeignKey, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
+
+if TYPE_CHECKING:
+    from models.carts import Cart
+    from models.menu_items import MenuItem
 
 
 class CartItem(Base):
@@ -33,7 +38,7 @@ class CartItem(Base):
         default=1,
     )
 
-    special_instruction: Mapped[str] = mapped_column(
+    special_instruction: Mapped[str | None] = mapped_column(
         String(255),
         nullable=True,
     )

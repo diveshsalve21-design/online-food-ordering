@@ -2,6 +2,11 @@ from sqlalchemy import Column, String, Uuid, ForeignKey, Integer
 from uuid import UUID, uuid4
 from database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.menu_items import MenuItem
+    from models.restaurants import Restaurant
 
 class MenuCategory(Base):
 

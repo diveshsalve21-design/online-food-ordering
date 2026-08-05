@@ -2,8 +2,12 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import String, Float, ForeignKey, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
+
+if TYPE_CHECKING:
+    from models.menu_items import MenuItem
 
 
 class ItemVariant(Base):

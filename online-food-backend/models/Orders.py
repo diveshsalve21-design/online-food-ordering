@@ -4,9 +4,20 @@ from datetime import datetime
 from sqlalchemy import Float,DateTime,ForeignKey,Uuid,Enum
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
 from models.Enums import OrderStatus
+
+if TYPE_CHECKING:
+    from models.Order_items import OrderItem
+    from models.Reviews import Review
+    from models.address import Address
+    from models.coupon import Coupon
+    from models.deliveries import Delivery
+    from models.payments import Payment
+    from models.restaurants import Restaurant
+    from models.users import User
 
 
 class Order(Base):
@@ -36,7 +47,7 @@ class Order(Base):
         nullable=False,
     )
 
-    coupon_id: Mapped[UUID] = mapped_column(
+    coupon_id: Mapped[UUID | None] = mapped_column(
         Uuid,
         ForeignKey("coupons.id"),
         nullable=True,

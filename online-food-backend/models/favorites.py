@@ -3,8 +3,13 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import DateTime, ForeignKey, Uuid, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
+
+if TYPE_CHECKING:
+    from models.restaurants import Restaurant
+    from models.users import User
 
 
 class Favorite(Base):

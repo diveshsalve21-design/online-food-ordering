@@ -11,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from database import engine, Base
 from sqlalchemy.orm import Session
+import models  # Register every SQLAlchemy model before creating tables.
 from models.users import User
 from models.Enums import UserRole, OrderStatus, PaymentStatus, PaymentMethod
 from models.restaurants import Restaurant
@@ -29,8 +30,8 @@ def seed_database():
     db = Session(bind=engine)
     try:
         # Check if restaurants already seeded with menu items
-        if db.query(Restaurant).count() >= 6 and db.query(MenuItem).count() > 0:
-            print("Database already fully seeded with 6 restaurants and menu items!")
+        if db.query(Restaurant).count() >= 8 and db.query(MenuItem).count() > 0:
+            print("Database already fully seeded with 8 restaurants and menu items!")
             return
 
         print("Seeding initial users...")
@@ -58,6 +59,8 @@ def seed_database():
         owner_tandoori = get_or_create_user("tandoori@owner.com", "Khan Sahib (Tandoori Junction Owner)", "+1944444444", "owner123", UserRole.OWNER)
         owner_south = get_or_create_user("southspice@owner.com", "Venkatesh Iyer (South Spice Owner)", "+1955555555", "owner123", UserRole.OWNER)
         owner_sweet = get_or_create_user("sweettreats@owner.com", "Anita Sweet (Sweet Treats Owner)", "+1966666666", "owner123", UserRole.OWNER)
+        owner_coastal = get_or_create_user("coastalcurry@owner.com", "Meera Naik (Coastal Curry House Owner)", "+1977777777", "owner123", UserRole.OWNER)
+        owner_bombay = get_or_create_user("bombaybistro@owner.com", "Arjun Mehta (Bombay Street Bistro Owner)", "+1988888888", "owner123", UserRole.OWNER)
 
         db.commit()
 
@@ -105,13 +108,15 @@ def seed_database():
                 db.commit()
             return r
 
-        print("Seeding 6 restaurants...")
+        print("Seeding 8 restaurants...")
         rest_spice = get_or_create_restaurant(owner_spice.id, "Spice Hub", "Indian, North Indian, Chinese", "FSSAI-10001", 4.8, "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200", "Authentic North Indian curry, aromatic biryani, and Indo-Chinese delicacies made fresh with organic spices.", "45 Curry Lane, Downtown", "+1 555-0101", "25-35 min", 2.99, 12.00)
         rest_pizza = get_or_create_restaurant(owner_pizza.id, "Pizza Palace", "Pizza, Italian, Fast Food", "FSSAI-10002", 4.7, "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600", "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200", "Hand-tossed wood-fired pizzas with artisanal cheeses and imported Italian tomato sauce.", "88 Italian Plaza, Westside", "+1 555-0102", "20-30 min", 1.99, 10.00)
         rest_burger = get_or_create_restaurant(owner_burger.id, "Burger House", "Burgers, Fast Food", "FSSAI-10003", 4.6, "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600", "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=1200", "Gourmet smash burgers, crispy chicken sandwiches, and golden hand-cut fries.", "12 Burger Boulevard, Central District", "+1 555-0103", "15-25 min", 2.49, 8.00)
         rest_tandoori = get_or_create_restaurant(owner_tandoori.id, "Tandoori Junction", "Mughlai, Tandoor, North Indian", "FSSAI-10004", 4.9, "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600", "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200", "Sizzling tandoori kebabs, rich buttery gravies, and royal Mughlai breads baked in clay ovens.", "77 Royal Street, East End", "+1 555-0104", "30-40 min", 3.49, 15.00)
         rest_south = get_or_create_restaurant(owner_south.id, "South Spice", "South Indian", "FSSAI-10005", 4.8, "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=600", "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=1200", "Crispy masala dosas, fluffy steamed idlis, spicy chettinad curries, and piping hot filter coffee.", "104 Coconut Grove, South Avenue", "+1 555-0105", "20-30 min", 1.99, 10.00)
         rest_sweet = get_or_create_restaurant(owner_sweet.id, "Sweet Treats", "Desserts, Cakes, Ice Cream", "FSSAI-10006", 4.9, "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600", "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1200", "Handcrafted cakes, warm chocolate brownies, gelato, waffles, and traditional Indian sweets.", "9 Baker's Square, Midtown", "+1 555-0106", "15-25 min", 1.49, 7.00)
+        rest_coastal = get_or_create_restaurant(owner_coastal.id, "Coastal Curry House", "Seafood, Konkan, Indian", "FSSAI-10007", 4.7, "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600", "https://images.unsplash.com/photo-1547592180-85f173990554?w=1200", "Konkan seafood, coconut curries, and fresh coastal favourites.", "18 Seaside Road, Harbour View", "+1 555-0107", "25-35 min", 2.99, 14.00)
+        rest_bombay = get_or_create_restaurant(owner_bombay.id, "Bombay Street Bistro", "Street Food, Indian", "FSSAI-10008", 4.5, "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200", "Mumbai street-food classics, served hot with bold chutneys and spices.", "63 Market Lane, Central District", "+1 555-0108", "15-25 min", 1.49, 8.00)
 
         db.commit()
 
@@ -192,15 +197,28 @@ def seed_database():
         add_item(rest_sweet.id, c_st_rec, "Sizzling Chocolate Brownie", 6.99, True, "Warm fudge brownie served with vanilla ice cream and hot chocolate sauce.", "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500")
         add_item(rest_sweet.id, c_st_dessert, "Gulab Jamun (2 Pcs)", 3.99, True, "Warm milk solid dumplings soaked in cardamom sugar syrup.", "https://images.unsplash.com/photo-1593701478625-3b987b7a13c3?w=500")
 
+        # 7. Coastal Curry House Menu
+        c_cc_rec = add_cat(rest_coastal.id, "Recommended", 1)
+        c_cc_seafood = add_cat(rest_coastal.id, "Seafood Specials", 2)
+        add_item(rest_coastal.id, c_cc_rec, "Konkan Prawn Curry", 15.99, False, "Coastal prawns simmered in a fragrant coconut and kokum curry.", "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500")
+        add_item(rest_coastal.id, c_cc_seafood, "Crispy Surmai Fry", 14.49, False, "Spiced king mackerel fried crisp and served with fresh salad.", "https://images.unsplash.com/photo-1547592180-85f173990554?w=500")
+
+        # 8. Bombay Street Bistro Menu
+        c_bs_rec = add_cat(rest_bombay.id, "Recommended", 1)
+        c_bs_street = add_cat(rest_bombay.id, "Street Food", 2)
+        add_item(rest_bombay.id, c_bs_rec, "Mumbai Vada Pav", 4.49, True, "Spiced potato fritter in a soft pav with dry garlic chutney.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500")
+        add_item(rest_bombay.id, c_bs_street, "Butter Pav Bhaji", 6.99, True, "Rich mashed vegetable bhaji served with buttered pav.", "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500")
+
         print("Creating initial customer cart...")
         # Create initial customer cart pointing to Spice Hub
-        cust_cart = Cart(
-            id=uuid4(),
-            user_id=customer_user.id,
-            restaurant_id=rest_spice.id
-        )
-        db.add(cust_cart)
-        db.commit()
+        if not db.query(Cart).filter(Cart.user_id == customer_user.id).first():
+            cust_cart = Cart(
+                id=uuid4(),
+                user_id=customer_user.id,
+                restaurant_id=rest_spice.id
+            )
+            db.add(cust_cart)
+            db.commit()
 
         print("Creating sample customer order...")
         sample_order = Order(
@@ -229,7 +247,7 @@ def seed_database():
         db.add(order_item1)
         db.commit()
 
-        print("Database successfully seeded with 6 restaurants, menu items, users, and orders!")
+        print("Database successfully seeded with 8 restaurants, menu items, users, and orders!")
 
     except Exception as e:
         db.rollback()

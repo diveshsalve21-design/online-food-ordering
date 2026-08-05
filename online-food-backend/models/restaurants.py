@@ -3,6 +3,17 @@ from uuid import UUID, uuid4
 from datetime import datetime
 from database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.Orders import Order
+    from models.Reviews import Review
+    from models.carts import Cart
+    from models.coupon import Coupon
+    from models.favorites import Favorite
+    from models.menu_categories import MenuCategory
+    from models.menu_items import MenuItem
+    from models.users import User
 
 class Restaurant(Base):
 

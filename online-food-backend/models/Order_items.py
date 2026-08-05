@@ -2,8 +2,13 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import Float, Integer, ForeignKey, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
+
+if TYPE_CHECKING:
+    from models.Orders import Order
+    from models.menu_items import MenuItem
 
 
 class OrderItem(Base):

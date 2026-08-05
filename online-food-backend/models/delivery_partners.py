@@ -2,9 +2,14 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import Boolean, Float, ForeignKey, Uuid, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
 from models.Enums import VehicleType
+
+if TYPE_CHECKING:
+    from models.deliveries import Delivery
+    from models.users import User
 
 
 class DeliveryPartner(Base):
@@ -34,12 +39,12 @@ class DeliveryPartner(Base):
         nullable=False,
     )
 
-    current_lat: Mapped[float] = mapped_column(
+    current_lat: Mapped[float | None] = mapped_column(
         Float,
         nullable=True,
     )
 
-    current_lng: Mapped[float] = mapped_column(
+    current_lng: Mapped[float | None] = mapped_column(
         Float,
         nullable=True,
     )

@@ -4,8 +4,14 @@ from datetime import datetime
 from sqlalchemy import String,Integer,DateTime,ForeignKey,Uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
+
+if TYPE_CHECKING:
+    from models.Orders import Order
+    from models.restaurants import Restaurant
+    from models.users import User
 
 
 class Review(Base):
@@ -41,7 +47,7 @@ class Review(Base):
         nullable=False,
     )
 
-    comment: Mapped[str] = mapped_column(
+    comment: Mapped[str | None] = mapped_column(
         String(500),
         nullable=True,
     )

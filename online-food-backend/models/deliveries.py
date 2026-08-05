@@ -3,9 +3,14 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import String, DateTime, ForeignKey, Uuid, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
 from models.Enums import DeliveryStatus
+
+if TYPE_CHECKING:
+    from models.Orders import Order
+    from models.delivery_partners import DeliveryPartner
 
 
 class Delivery(Base):
@@ -24,7 +29,7 @@ class Delivery(Base):
         nullable=False,
     )
 
-    delivery_partner_id: Mapped[UUID] = mapped_column(
+    delivery_partner_id: Mapped[UUID | None] = mapped_column(
         Uuid,
         ForeignKey("delivery_partners.id"),
         nullable=True,
@@ -36,17 +41,17 @@ class Delivery(Base):
         nullable=False,
     )
 
-    otp: Mapped[str] = mapped_column(
+    otp: Mapped[str | None] = mapped_column(
         String(10),
         nullable=True,
     )
 
-    picked_at: Mapped[datetime] = mapped_column(
+    picked_at: Mapped[datetime | None] = mapped_column(
         DateTime,
         nullable=True,
     )
 
-    delivered_at: Mapped[datetime] = mapped_column(
+    delivered_at: Mapped[datetime | None] = mapped_column(
         DateTime,
         nullable=True,
     )

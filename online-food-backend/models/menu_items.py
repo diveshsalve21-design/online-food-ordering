@@ -2,6 +2,15 @@ from sqlalchemy import Column, String, Boolean, Uuid,Text, ForeignKey, Numeric
 from uuid import UUID, uuid4
 from database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.Carts_Items import CartItem
+    from models.Item_Addons import ItemAddon
+    from models.Order_items import OrderItem
+    from models.item_Variant import ItemVariant
+    from models.menu_categories import MenuCategory
+    from models.restaurants import Restaurant
 
 class MenuItem(Base):
 
@@ -30,7 +39,7 @@ class MenuItem(Base):
         nullable=False
     )
 
-    description: Mapped[Text] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Text,
         nullable=True
     )
@@ -52,7 +61,7 @@ class MenuItem(Base):
         nullable=False
     )
 
-    image_url: Mapped[str] = mapped_column(
+    image_url: Mapped[str | None] = mapped_column(
         String(255),
         nullable=True
     )

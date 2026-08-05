@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Filter, MapPin, Search, Star, Timer } from "lucide-react";
-import { categories, dishes, getRestaurant, getRestaurantDishes, restaurants } from "@/lib/data";
+import { categories, dishes, getFoodImageFallback, getRestaurant, getRestaurantDishes, restaurants } from "@/lib/data";
 import { useCart, inr } from "@/lib/cart";
 import { VegDot } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -76,7 +76,7 @@ function MenuPage() {
         {list.map((dish) => (
           <article key={dish.id} className="card-lift card-lift-hover overflow-hidden rounded-3xl glass">
             <div className="relative aspect-[16/10]">
-              <img src={dish.image} alt={dish.name} className="h-full w-full object-cover" loading="lazy" width={800} height={500} />
+              <img src={dish.image} alt={dish.name} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = getFoodImageFallback(dish.category); }} className="h-full w-full object-cover" loading="lazy" width={800} height={500} />
               <span className="absolute left-3 top-3 grid h-6 w-6 place-items-center rounded-md bg-black/50 backdrop-blur"><VegDot veg={dish.veg} /></span>
               <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/50 px-2 py-1 text-xs backdrop-blur"><Timer className="h-3 w-3" /> {dish.time}m</span>
             </div>

@@ -2,6 +2,11 @@ from database import Base
 from sqlalchemy import UUID, String, ForeignKey, Uuid, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import UUID,uuid4
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.Orders import Order
+    from models.users import User
 
 class Address(Base):
 

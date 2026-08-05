@@ -3,9 +3,13 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import String, Float, DateTime, ForeignKey, Uuid, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from database import Base
 from models.Enums import PaymentMethod, PaymentStatus
+
+if TYPE_CHECKING:
+    from models.Orders import Order
 
 
 class Payment(Base):
@@ -35,7 +39,7 @@ class Payment(Base):
         nullable=False,
     )
 
-    transaction_id: Mapped[str] = mapped_column(
+    transaction_id: Mapped[str | None] = mapped_column(
         String(100),
         unique=True,
         nullable=True,
@@ -46,7 +50,7 @@ class Payment(Base):
         nullable=False,
     )
 
-    paid_at: Mapped[datetime] = mapped_column(
+    paid_at: Mapped[datetime | None] = mapped_column(
         DateTime,
         nullable=True,
     )
