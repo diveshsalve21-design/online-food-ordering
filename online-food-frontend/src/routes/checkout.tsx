@@ -372,6 +372,8 @@ function Checkout() {
             </Button>
           </div>
         </div>
+
+        <RewardsModal open={showRewardsModal} onOpenChange={setShowRewardsModal} />
       </div>
     );
   }
