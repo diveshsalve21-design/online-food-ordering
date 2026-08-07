@@ -221,15 +221,22 @@ function QuickCategories() {
   return (
     <section>
       <SectionHead title="What are you craving?" sub="Browse by category" />
-      <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2">
+      <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3">
         {categories.map((c) => (
           <button
             key={c.key}
             onClick={() => navigate({ to: "/menu", search: { cat: c.key } })}
-            className="card-lift card-lift-hover glass group grid h-28 w-28 shrink-0 snap-start place-items-center rounded-2xl text-center cursor-pointer border border-white/10"
+            className="card-lift card-lift-hover glass-strong group flex flex-col items-center justify-center p-3.5 h-36 w-32 shrink-0 snap-start rounded-3xl text-center cursor-pointer border border-white/15 transition-all hover:border-primary/50 shadow-glow"
           >
-            <div className="text-3xl transition-transform group-hover:scale-110">{c.emoji}</div>
-            <div className="mt-1 text-xs font-medium text-foreground">{c.label}</div>
+            <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-white/20 shadow-lg transition-transform duration-300 group-hover:scale-110">
+              <img
+                src={c.image}
+                alt={c.label}
+                loading="eager"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="mt-2.5 text-xs font-black text-foreground group-hover:text-primary transition-colors">{c.label}</div>
           </button>
         ))}
       </div>

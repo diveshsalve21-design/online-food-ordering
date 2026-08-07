@@ -15,19 +15,25 @@ import {
   Lock,
   Tag,
   Check,
+  LogIn,
+  Flame,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart, inr } from "@/lib/cart";
+import { getCurrentUser, CustomerUser } from "@/routes/login";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
+import { RewardsModal } from "@/components/rewards-modal";
+import { Trophy } from "lucide-react";
+
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
-      { title: "Checkout · Online Food Ordering System" },
-      { name: "description", content: "Complete your food order with Razorpay test mode payment." },
+      { title: "Checkout · FoodFun" },
+      { name: "description", content: "Complete your food order with Razorpay test mode payment on FoodFun." },
     ],
   }),
   component: Checkout,
@@ -35,11 +41,15 @@ export const Route = createFileRoute("/checkout")({
 
 function Checkout() {
   const navigate = useNavigate();
-  const { items, subtotal, gst, delivery: baseDelivery, clear, saveOrder } = useCart();
+  const { items, subtotal, gst, delivery: baseDelivery, deliverySavings, uniqueRestaurants, isMultiRestaurant, clear, saveOrder } = useCart();
+  const [currentUser, setCurrentUser] = useState<CustomerUser | null>(null);
+
+  // Rewards Spin Modal State
+  const [showRewardsModal, setShowRewardsModal] = useState(false);
 
   // Delivery form state
-  const [fullName, setFullName] = useState("Divesh Salve");
-  const [phone, setPhone] = useState("9876543210");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [houseNo, setHouseNo] = useState("Flat 402, Sunshine Apartments");
   const [street, setStreet] = useState("Station Road, West");
   const [city, setCity] = useState("Kalyan");
@@ -47,12 +57,25 @@ function Checkout() {
   const [pincode, setPincode] = useState("421 306");
   const [instructions, setInstructions] = useState("");
 
+  // Load logged in user
+  useEffect(() => {
+    const user = getCurrentUser();
+    setCurrentUser(user);
+    if (user) {
+      if (user.fullName) setFullName(user.fullName);
+      if (user.phone) setPhone(user.phone);
+      if (user.address) setStreet(user.address);
+      if (user.city) setCity(user.city);
+      if (user.pincode) setPincode(user.pincode);
+    }
+  }, []);
+
   // Payment method selection
   const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "upi" | "card" | "cod">("razorpay");
 
   // Order status
   const [placed, setPlaced] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState<{ paymentId: string; orderId: string } | null>(null);
+  const [paymentDetails, setPaymentDetails] = useState<{ paymentId: string; orderId: string; paidAmount?: number } | null>(null);
 
   // Coupon / Redeem Code State
   const [couponCode, setCouponCode] = useState("");
@@ -73,6 +96,34 @@ function Checkout() {
   const [testCardCvv, setTestCardCvv] = useState("123");
   const [isAuthorizing, setIsAuthorizing] = useState(false);
 
+  // 🔒 STRICT CHECKOUT LOGIN GUARD
+  if (!currentUser) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-16 text-center">
+        <div className="glass-strong space-y-6 rounded-3xl p-8 border border-white/10 shadow-glow">
+          <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-amber-500/20 text-amber-400">
+            <Lock className="h-10 w-10" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-black text-foreground">Login Required to Order</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Without logging in, food ordering is not allowed. Please login or register a new customer account to place your food order.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <Button
+              className="flex-1 h-12 rounded-xl text-base font-bold shadow-glow cursor-pointer"
+              style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}
+              onClick={() => navigate({ to: "/login" })}
+            >
+              <LogIn className="mr-2 h-5 w-5" /> Go to Login / Register Page
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const handleApplyCoupon = (codeToApply?: string) => {
     const code = (codeToApply || couponCode).trim().toUpperCase();
     if (!code) {
@@ -85,29 +136,75 @@ function Checkout() {
       return;
     }
 
-    // Coupon Validation Logic
-    if (code === "FLASH60" || code === "SPIN60") {
-      const calcDiscount = Math.min(Math.round(subtotal * 0.6), 120);
-      setAppliedCoupon({ code, discountAmount: calcDiscount, isFreeDelivery: false });
-      toast.success(`Coupon "${code}" Applied! Saved ${inr(calcDiscount)}`);
-    } else if (code === "QUIZ100" || code === "AARAV100" || code === "REFER100") {
-      const calcDiscount = 100;
-      setAppliedCoupon({ code, discountAmount: calcDiscount, isFreeDelivery: false });
-      toast.success(`Coupon "${code}" Applied! Flat ₹100 OFF`);
-    } else if (code === "SCRATCHFREE") {
-      const calcDiscount = 50;
-      setAppliedCoupon({ code, discountAmount: calcDiscount, isFreeDelivery: true });
-      toast.success(`Coupon "${code}" Applied! Free Dessert + ₹50 OFF & FREE Delivery!`);
-    } else if (code === "FREEDEL") {
-      setAppliedCoupon({ code, discountAmount: 0, isFreeDelivery: true });
-      toast.success(`Coupon "${code}" Applied! FREE Delivery Unlocked`);
-    } else if (code === "BOGO" || code === "WEEKEND") {
-      const calcDiscount = Math.round(subtotal * 0.5);
-      setAppliedCoupon({ code, discountAmount: calcDiscount, isFreeDelivery: false });
-      toast.success(`Coupon "${code}" Applied! Saved ${inr(calcDiscount)}`);
-    } else {
-      toast.error(`Invalid Coupon Code "${code}". Try FLASH60 or QUIZ100!`);
+    // ⛔ Single-Use Check (Tracked via localStorage)
+    const usedCoupons: string[] = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("foodfun_used_coupons") || "[]") : [];
+    if (usedCoupons.includes(code)) {
+      toast.error(`⛔ Coupon Code "${code}" Already Used!`, {
+        description: "Each coupon code can only be redeemed once per account.",
+      });
+      return;
     }
+
+    // Coupon Rules & Minimum Subtotal Enforcement
+    const couponRules: Record<string, { minSubtotal: number; calc: (sub: number) => { discountAmount: number; isFreeDelivery: boolean; label: string } }> = {
+      FLASH60: {
+        minSubtotal: 499,
+        calc: (sub) => ({ discountAmount: Math.min(Math.round(sub * 0.6), 150), isFreeDelivery: false, label: "Saved 60% OFF (Max ₹150)" }),
+      },
+      SPIN60: {
+        minSubtotal: 499,
+        calc: (sub) => ({ discountAmount: Math.min(Math.round(sub * 0.6), 150), isFreeDelivery: false, label: "Saved 60% OFF" }),
+      },
+      QUIZ100: {
+        minSubtotal: 399,
+        calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
+      },
+      FOODFUN100: {
+        minSubtotal: 399,
+        calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
+      },
+      REFER100: {
+        minSubtotal: 399,
+        calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
+      },
+      SCRATCHFREE: {
+        minSubtotal: 349,
+        calc: () => ({ discountAmount: 50, isFreeDelivery: true, label: "Free Dessert + ₹50 OFF & FREE Delivery" }),
+      },
+      FREEDEL: {
+        minSubtotal: 299,
+        calc: () => ({ discountAmount: 0, isFreeDelivery: true, label: "FREE Delivery Unlocked" }),
+      },
+      BOGO: {
+        minSubtotal: 449,
+        calc: (sub) => ({ discountAmount: Math.round(sub * 0.5), isFreeDelivery: false, label: "BOGO 50% OFF" }),
+      },
+      WEEKEND: {
+        minSubtotal: 449,
+        calc: (sub) => ({ discountAmount: Math.round(sub * 0.5), isFreeDelivery: false, label: "Weekend Combo 50% OFF" }),
+      },
+      FOODFUN50: {
+        minSubtotal: 249,
+        calc: () => ({ discountAmount: 50, isFreeDelivery: false, label: "Flat ₹50 OFF" }),
+      },
+    };
+
+    const rule = couponRules[code];
+    if (!rule) {
+      toast.error(`Invalid Coupon Code "${code}". Try FLASH60, QUIZ100, or FREEDEL!`);
+      return;
+    }
+
+    if (subtotal < rule.minSubtotal) {
+      toast.error(`⛔ Minimum Order Requirement Not Met!`, {
+        description: `Coupon "${code}" requires a minimum food total of ${inr(rule.minSubtotal)}. Add ${inr(rule.minSubtotal - subtotal)} more to apply!`,
+      });
+      return;
+    }
+
+    const { discountAmount, isFreeDelivery, label } = rule.calc(subtotal);
+    setAppliedCoupon({ code, discountAmount, isFreeDelivery });
+    toast.success(`Coupon "${code}" Applied! ${label}`);
   };
 
   const handleRemoveCoupon = () => {
@@ -120,10 +217,11 @@ function Checkout() {
     const mockOrderId = "ORD_" + Math.floor(100000 + Math.random() * 900000);
     const finalPaymentId = paymentId || "pay_rzp_test_" + Math.random().toString(36).substring(2, 10);
     
-    // Persist placed order into Order History
+    // Persist placed order into Order History for logged-in user
     saveOrder({
       id: mockOrderId,
       paymentId: finalPaymentId,
+      userEmail: currentUser?.email || "",
       customerName: fullName,
       phone: phone,
       address: `${houseNo}, ${street}, ${city}, ${state} - ${pincode}`,
@@ -137,17 +235,39 @@ function Checkout() {
       paymentMethod: paymentMethod === "cod" ? "Cash on Delivery" : "Razorpay (Test Mode)",
     });
 
+    // 1. Mark applied coupon as used in localStorage
+    if (appliedCoupon && typeof window !== "undefined") {
+      const usedCoupons: string[] = JSON.parse(localStorage.getItem("foodfun_used_coupons") || "[]");
+      if (!usedCoupons.includes(appliedCoupon.code)) {
+        usedCoupons.push(appliedCoupon.code);
+        localStorage.setItem("foodfun_used_coupons", JSON.stringify(usedCoupons));
+      }
+    }
+
+    // 2. Award +1 Bonus Spin credit on every completed order!
+    if (typeof window !== "undefined") {
+      const currentSpins = parseInt(localStorage.getItem("foodfun_spins_count") || "0", 10);
+      localStorage.setItem("foodfun_spins_count", (currentSpins + 1).toString());
+    }
+
     setPaymentDetails({
       paymentId: finalPaymentId,
       orderId: mockOrderId,
+      paidAmount: total,
     });
     setPlaced(true);
     setShowRazorpayModal(false);
     setIsAuthorizing(false);
     clear();
-    toast.success("Razorpay Payment Successful!", {
-      description: `Payment ID: ${finalPaymentId}`,
+    
+    toast.success("Razorpay Payment Successful! 🎉", {
+      description: `Payment ID: ${finalPaymentId} · +1 Bonus Spin Unlocked!`,
     });
+
+    // Auto open Spin Wheel rewards modal after 400ms
+    setTimeout(() => {
+      setShowRewardsModal(true);
+    }, 400);
   };
 
   const handleStartPayment = (e: React.FormEvent) => {
@@ -190,7 +310,7 @@ function Checkout() {
           <div>
             <h1 className="text-3xl font-black text-foreground">Order Confirmed!</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Thank you for ordering with Online Food Ordering System. Delivery to <span className="font-semibold text-foreground">{fullName} ({city})</span>.
+              Thank you for ordering with <span className="font-bold text-primary">FoodFun</span>. Delivery to <span className="font-semibold text-foreground">{fullName} ({city})</span>.
             </p>
           </div>
 
@@ -217,8 +337,22 @@ function Checkout() {
             )}
             <div className="flex justify-between pt-1 font-bold text-base">
               <span>Amount Paid</span>
-              <span className="text-primary">{inr(total)}</span>
+              <span className="text-primary">{inr(paymentDetails?.paidAmount ?? total)}</span>
             </div>
+          </div>
+
+          {/* SPIN & WIN REWARDS PROMO BUTTON */}
+          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-center space-y-2">
+            <div className="text-sm font-bold text-amber-400 flex items-center justify-center gap-2">
+              <Trophy className="h-5 w-5 animate-bounce" /> Order Reward Unlocked!
+            </div>
+            <p className="text-xs text-muted-foreground">Spin the 3D Fortune Wheel to win a free dessert or cashback coupon!</p>
+            <Button
+              onClick={() => setShowRewardsModal(true)}
+              className="h-10 px-6 rounded-xl font-bold text-xs shadow-glow border border-amber-400 bg-amber-500 text-black hover:bg-amber-400 cursor-pointer"
+            >
+              Spin Fortune Wheel Now 🎡
+            </Button>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -227,7 +361,7 @@ function Checkout() {
               style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}
               onClick={() => navigate({ to: "/orders" })}
             >
-              Track Live Order
+              <Truck className="mr-2 h-5 w-5" /> Track Live Delivery Order
             </Button>
             <Button
               variant="ghost"
@@ -474,10 +608,29 @@ function Checkout() {
         {/* Order Summary & Payment Action */}
         <div className="space-y-4">
           <div className="glass-strong sticky top-24 rounded-3xl p-6 border border-white/10 shadow-soft">
-            <div className="flex items-center gap-2 text-base font-bold text-foreground mb-4">
-              <Truck className="h-5 w-5 text-primary" />
-              Order Summary
+            <div className="flex items-center justify-between text-base font-bold text-foreground mb-4">
+              <span className="flex items-center gap-2">
+                <Truck className="h-5 w-5 text-primary" /> Order Summary
+              </span>
+              {isMultiRestaurant && (
+                <span className="rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 text-[10px] font-black text-emerald-300">
+                  Multi-Hotel Combo
+                </span>
+              )}
             </div>
+
+            {isMultiRestaurant && (
+              <div className="mb-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-400 font-semibold space-y-1">
+                <div className="flex items-center justify-between font-bold text-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <Flame className="h-3.5 w-3.5 text-emerald-400" /> {uniqueRestaurants.length} Restaurants in 1 Order
+                  </span>
+                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 font-bold">
+                    Saved {inr(deliverySavings)}
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div className="max-h-60 overflow-y-auto space-y-3 pr-1 text-sm">
               {items.length === 0 ? (
@@ -485,10 +638,15 @@ function Checkout() {
               ) : (
                 items.map((item) => (
                   <div key={item.id} className="flex items-center justify-between gap-2">
-                    <span className="truncate text-muted-foreground">
-                      <span className="font-semibold text-foreground">{item.qty}×</span> {item.name}
-                    </span>
-                    <span className="font-medium text-foreground">{inr(item.price * item.qty)}</span>
+                    <div className="truncate min-w-0">
+                      <div className="truncate text-foreground font-medium">
+                        <span className="font-semibold text-primary">{item.qty}×</span> {item.name}
+                      </div>
+                      {item.restaurantName && (
+                        <div className="text-[10px] font-bold text-secondary">📍 {item.restaurantName}</div>
+                      )}
+                    </div>
+                    <span className="font-medium text-foreground whitespace-nowrap">{inr(item.price * item.qty)}</span>
                   </div>
                 ))
               )}
@@ -559,9 +717,15 @@ function Checkout() {
               <SummaryRow label="GST (5%)" value={inr(gst)} />
               <SummaryRow
                 label="Delivery Fee"
-                value={delivery === 0 ? "FREE" : inr(delivery)}
+                value={delivery === 0 ? "FREE" : isMultiRestaurant ? `${inr(delivery)} (Combined)` : inr(delivery)}
                 valueClass={delivery === 0 ? "text-accent font-bold" : ""}
               />
+              {isMultiRestaurant && deliverySavings > 0 && (
+                <div className="flex justify-between text-emerald-400 font-bold text-xs">
+                  <span>Multi-Hotel Delivery Savings</span>
+                  <span>-{inr(deliverySavings)}</span>
+                </div>
+              )}
               {appliedCoupon && appliedCoupon.discountAmount > 0 && (
                 <div className="flex justify-between text-accent font-bold text-xs">
                   <span>Coupon Discount ({appliedCoupon.code})</span>

@@ -3,7 +3,7 @@ import { ChevronRight, Copy, Tag } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/offers")({
-  head: () => ({ meta: [{ title: "Offers · FoodFusion" }] }),
+  head: () => ({ meta: [{ title: "Offers · FoodFun" }] }),
   component: Offers,
 });
 

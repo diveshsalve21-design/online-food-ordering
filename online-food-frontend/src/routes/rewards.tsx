@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/rewards")({
-  head: () => ({ meta: [{ title: "Rewards · FoodFusion" }] }),
+  head: () => ({ meta: [{ title: "Rewards · FoodFun" }] }),
   component: Rewards,
 });
 
@@ -20,18 +20,16 @@ function Rewards() {
       return;
     }
     setPoints((prev) => prev - requiredPts);
-    toast.success(`Successfully redeemed ${rewardText}!`, {
-      description: "Coupon code added to your checkout wallet.",
-    });
+    toast.success(`Redeemed ${rewardText}! ${requiredPts} points deducted.`);
   };
 
   const handleCopyReferral = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText("AARAV100");
+      navigator.clipboard.writeText("FOODFUN100");
+      setCopied(true);
+      toast.success("Referral Code 'FOODFUN100' copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
     }
-    setCopied(true);
-    toast.success("Referral Code AARAV100 copied to clipboard!");
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -39,7 +37,7 @@ function Rewards() {
       <div className="glass-strong overflow-hidden rounded-3xl p-6 border border-white/10 shadow-soft">
         <div className="flex flex-wrap items-center gap-6">
           <div
-            className="grid h-20 w-20 place-items-center rounded-2xl shadow-glow"
+            className="grid h-20 w-20 place-items-center rounded-2xl shadow-glow shrink-0"
             style={{ background: "var(--gradient-sunset)" }}
           >
             <Gift
@@ -48,8 +46,8 @@ function Rewards() {
             />
           </div>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              FoodFusion Rewards
+            <div className="text-xs font-bold uppercase tracking-wider text-primary">
+              FoodFun Rewards
             </div>
             <div className="text-4xl font-black text-foreground">
               {points} <span className="text-lg font-semibold text-secondary">pts</span>

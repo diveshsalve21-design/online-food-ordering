@@ -53,19 +53,8 @@ export function getRegisteredAccounts(): CustomerUser[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
-    const defaultUser: CustomerUser = {
-      fullName: "Divesh Salve",
-      email: "divesh@fusion.in",
-      phone: "9876543210",
-      address: "Station Road, Kalyan West",
-      city: "Kalyan",
-      pincode: "421 306",
-      password: "Divesh@123",
-      createdAt: new Date().toISOString(),
-    };
     if (!raw) {
-      localStorage.setItem(REGISTERED_ACCOUNTS_KEY, JSON.stringify([defaultUser]));
-      return [defaultUser];
+      return [];
     }
     return JSON.parse(raw);
   } catch (err) {
@@ -79,16 +68,7 @@ export function getCurrentUser(): CustomerUser | null {
   try {
     const raw = localStorage.getItem(CURRENT_USER_KEY);
     if (!raw) {
-      const defaultUser: CustomerUser = {
-        fullName: "Divesh Salve",
-        email: "divesh@fusion.in",
-        phone: "9876543210",
-        address: "Station Road, Kalyan West",
-        city: "Kalyan",
-        pincode: "421 306",
-      };
-      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(defaultUser));
-      return defaultUser;
+      return null;
     }
     return JSON.parse(raw);
   } catch (err) {
@@ -148,10 +128,22 @@ function UserLoginRegister() {
     await new Promise((r) => setTimeout(r, 800));
 
     const accounts = getRegisteredAccounts();
-    const match = accounts.find(
-      (a) =>
-        (a.email.toLowerCase() === emailOrPhone || a.phone.replace(/\D/g, "") === emailOrPhone.replace(/\D/g, ""))
-    );
+    const cleanSearch = emailOrPhone.trim().toLowerCase().replace(/\s+/g, "");
+    const cleanDigits = emailOrPhone.replace(/\D/g, "");
+
+    const match = accounts.find((a) => {
+      const aEmail = a.email.toLowerCase();
+      const aEmailPrefix = aEmail.split("@")[0];
+      const aName = a.fullName.toLowerCase().replace(/\s+/g, "");
+      const aPhone = a.phone.replace(/\D/g, "");
+
+      return (
+        aEmail === cleanSearch ||
+        aEmailPrefix === cleanSearch ||
+        aName === cleanSearch ||
+        (cleanDigits.length >= 5 && aPhone.includes(cleanDigits))
+      );
+    });
 
     if (!match) {
       setIsLoggingIn(false);
@@ -208,14 +200,25 @@ function UserLoginRegister() {
     setIsRegistering(true);
     await new Promise((r) => setTimeout(r, 1000));
 
-    // Check if account already exists
+    // Check if duplicate Email or Phone Number already exists
     const accounts = getRegisteredAccounts();
-    const existing = accounts.find((a) => a.email.toLowerCase() === cleanEmail);
+    const cleanPhone = regPhone.trim().replace(/\D/g, "");
 
-    if (existing) {
+    const existingEmail = accounts.find((a) => a.email.toLowerCase() === cleanEmail);
+    if (existingEmail) {
       setIsRegistering(false);
-      setRegError(`An account with email "${cleanEmail}" is already registered. Please login instead.`);
-      toast.error("Account already exists! Please login.");
+      setRegError(`The email "${cleanEmail}" is already registered. Please login or use another email.`);
+      toast.error("Email already registered! Please login.");
+      return;
+    }
+
+    const existingPhone = accounts.find(
+      (a) => a.phone.replace(/\D/g, "") === cleanPhone && cleanPhone.length >= 10
+    );
+    if (existingPhone) {
+      setIsRegistering(false);
+      setRegError(`The phone number "${regPhone}" is already registered to an account.`);
+      toast.error("Phone number already registered!");
       return;
     }
 
@@ -302,7 +305,7 @@ function UserLoginRegister() {
 
             {/* TAB 1: EXISTING USER LOGIN */}
             <TabsContent value="login" className="space-y-4 focus-visible:outline-none">
-              <form onSubmit={handleLoginSubmit} className="space-y-4">
+              <form onSubmit={handleLoginSubmit} className="space-y-4" autoComplete="off" autoCapitalize="off">
                 {loginError && (
                   <div className="flex items-center gap-2 rounded-xl bg-destructive/20 border border-destructive/40 p-3 text-xs text-destructive font-semibold">
                     <AlertCircle className="h-4 w-4 shrink-0" />
@@ -316,7 +319,11 @@ function UserLoginRegister() {
                     <Mail className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       type="text"
-                      placeholder="e.g. divesh@fusion.in"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck={false}
+                      placeholder="your.email@gmail.com or phone"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       className="h-11 rounded-xl border-white/10 bg-white/5 pl-10 text-sm"
@@ -331,6 +338,7 @@ function UserLoginRegister() {
                     <Lock className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       type={showLoginPassword ? "text" : "password"}
+                      autoComplete="new-password"
                       placeholder="Enter your password"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
