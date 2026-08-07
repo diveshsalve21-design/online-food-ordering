@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Gift, Heart, MapPin, Ticket, User, CheckCircle2 } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Gift, Heart, MapPin, Ticket, User, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
 import { restaurants } from "@/lib/data";
+import { getCurrentUser, CustomerUser } from "@/routes/login";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -11,11 +13,35 @@ export const Route = createFileRoute("/profile")({
 });
 
 function Profile() {
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState<CustomerUser | null>(null);
+
+  useEffect(() => {
+    setCurrentUser(getCurrentUser());
+  }, []);
+
   const handleApplyCoupon = (code: string, desc: string) => {
     toast.success(`Coupon ${code} Applied!`, {
       description: `${desc}. Discount will be reflected at checkout.`,
     });
   };
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("online_food_current_user");
+    }
+    toast.info("Logged out of customer profile.");
+    navigate({ to: "/login" });
+  };
+
+  const initials = currentUser?.fullName
+    ? currentUser.fullName
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "DS";
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 pb-16 pt-8 sm:px-6">
@@ -24,25 +50,38 @@ function Profile() {
           className="grid h-20 w-20 place-items-center rounded-2xl text-2xl font-black shadow-glow"
           style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}
         >
-          DS
+          {initials}
         </div>
         <div>
-          <h1 className="text-2xl font-black text-foreground">Divesh Salve</h1>
-          <div className="text-sm text-muted-foreground">divesh@fusion.in · +91 98765 43210</div>
+          <h1 className="text-2xl font-black text-foreground">
+            {currentUser?.fullName || "Divesh Salve"}
+          </h1>
+          <div className="text-sm text-muted-foreground">
+            {currentUser?.email || "divesh@fusion.in"} · {currentUser?.phone || "+91 98765 43210"}
+          </div>
           <div className="mt-2 flex flex-wrap gap-2 text-xs">
             <span className="rounded-full bg-white/5 px-3 py-1 text-muted-foreground border border-white/5">
               <MapPin className="mr-1 inline h-3 w-3 text-primary" />
-              Kalyan, MH (421306)
+              {currentUser?.address || "Station Road"}, {currentUser?.city || "Kalyan"} ({currentUser?.pincode || "421306"})
             </span>
             <span className="rounded-full bg-[color:var(--gold)]/15 px-3 py-1 font-semibold text-secondary border border-[color:var(--gold)]/30">
               Gold Member
             </span>
           </div>
         </div>
-        <div className="ml-auto grid grid-cols-3 gap-3 text-center">
-          <Stat label="Points" value="340" />
-          <Stat label="Orders" value="82" />
-          <Stat label="Saved" value="₹4.2k" />
+        <div className="ml-auto flex items-center gap-3">
+          <div className="hidden sm:grid grid-cols-3 gap-3 text-center">
+            <Stat label="Points" value="340" />
+            <Stat label="Orders" value="82" />
+            <Stat label="Saved" value="₹4.2k" />
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="ghost"
+            className="rounded-xl border border-rose-500/30 bg-rose-500/10 text-xs font-bold text-rose-400 hover:bg-rose-500/20"
+          >
+            <LogOut className="mr-1.5 h-3.5 w-3.5" /> Logout
+          </Button>
         </div>
       </section>
 
@@ -54,7 +93,7 @@ function Profile() {
             <Button
               size="sm"
               asChild
-              className="w-full rounded-xl text-xs font-bold"
+              className="w-full rounded-xl text-xs font-bold cursor-pointer"
               style={{ background: "var(--gradient-sunset)", color: "oklch(0.16 0.03 265)" }}
             >
               <Link to="/rewards">View All Rewards</Link>
@@ -83,9 +122,9 @@ function Profile() {
               <div key={r.id} className="flex items-center justify-between rounded-xl bg-white/5 p-2 text-sm border border-white/5">
                 <div className="flex items-center gap-2">
                   <img src={r.image} alt={r.name} className="h-8 w-8 rounded-lg object-cover" loading="lazy" />
-                  <span className="truncate text-xs font-semibold">{r.name}</span>
+                  <span className="truncate text-xs font-semibold text-foreground">{r.name}</span>
                 </div>
-                <Button size="sm" variant="ghost" asChild className="h-7 px-2 rounded-lg text-xs text-primary hover:bg-white/10">
+                <Button size="sm" variant="ghost" asChild className="h-7 px-2 rounded-lg text-xs text-primary hover:bg-white/10 cursor-pointer">
                   <Link to="/menu" search={{ hotel: r.id }}>Menu</Link>
                 </Button>
               </div>
@@ -124,7 +163,7 @@ function Coupon({ code, desc, onApply }: { code: string; desc: string; onApply: 
       </div>
       <button
         onClick={onApply}
-        className="text-xs font-bold text-primary hover:underline px-2 py-1 rounded-lg hover:bg-white/10 transition-colors"
+        className="text-xs font-bold text-primary hover:underline px-2 py-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
       >
         APPLY
       </button>

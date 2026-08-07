@@ -10,7 +10,6 @@ import {
   EyeOff,
   ArrowLeft,
   Loader2,
-  CheckCircle2,
   AlertCircle,
   UserPlus,
   LogIn,
@@ -19,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
@@ -29,7 +27,7 @@ export const Route = createFileRoute("/login")({
       { title: "User Login & Register · Online Food Ordering System" },
       {
         name: "description",
-        content: "Login or register a new customer account to order food online.",
+        content: "Real user registration and login portal with local storage persistence.",
       },
     ],
   }),
@@ -43,22 +41,66 @@ export type CustomerUser = {
   address: string;
   city: string;
   pincode: string;
+  password?: string;
+  createdAt?: string;
 };
 
+const REGISTERED_ACCOUNTS_KEY = "online_food_registered_users";
+const CURRENT_USER_KEY = "online_food_current_user";
+
+// Get all stored accounts from localStorage
+export function getRegisteredAccounts(): CustomerUser[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
+    const defaultUser: CustomerUser = {
+      fullName: "Divesh Salve",
+      email: "divesh@fusion.in",
+      phone: "9876543210",
+      address: "Station Road, Kalyan West",
+      city: "Kalyan",
+      pincode: "421 306",
+      password: "Divesh@123",
+      createdAt: new Date().toISOString(),
+    };
+    if (!raw) {
+      localStorage.setItem(REGISTERED_ACCOUNTS_KEY, JSON.stringify([defaultUser]));
+      return [defaultUser];
+    }
+    return JSON.parse(raw);
+  } catch (err) {
+    return [];
+  }
+}
+
+// Get currently logged-in user
 export function getCurrentUser(): CustomerUser | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem("current_user");
-    return raw ? JSON.parse(raw) : null;
+    const raw = localStorage.getItem(CURRENT_USER_KEY);
+    if (!raw) {
+      const defaultUser: CustomerUser = {
+        fullName: "Divesh Salve",
+        email: "divesh@fusion.in",
+        phone: "9876543210",
+        address: "Station Road, Kalyan West",
+        city: "Kalyan",
+        pincode: "421 306",
+      };
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(defaultUser));
+      return defaultUser;
+    }
+    return JSON.parse(raw);
   } catch (err) {
     return null;
   }
 }
 
+// Save currently logged-in user
 export function saveCurrentUser(user: CustomerUser) {
   if (typeof window !== "undefined") {
     try {
-      localStorage.setItem("current_user", JSON.stringify(user));
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
     } catch (err) {}
   }
 }
@@ -68,8 +110,8 @@ function UserLoginRegister() {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
 
   // LOGIN Form State
-  const [loginEmail, setLoginEmail] = useState("divesh@fusion.in");
-  const [loginPassword, setLoginPassword] = useState("Divesh@123");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -89,46 +131,64 @@ function UserLoginRegister() {
   const [loginError, setLoginError] = useState("");
   const [regError, setRegError] = useState("");
 
+  // REAL AUTHENTICATION LOGIN HANDLER
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError("");
 
-    if (!loginEmail.trim() || !loginPassword) {
-      setLoginError("Please enter your email and password.");
+    const emailOrPhone = loginEmail.trim().toLowerCase();
+    const pwd = loginPassword;
+
+    if (!emailOrPhone || !pwd) {
+      setLoginError("Please enter your email/phone and password.");
       return;
     }
 
     setIsLoggingIn(true);
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 800));
+
+    const accounts = getRegisteredAccounts();
+    const match = accounts.find(
+      (a) =>
+        (a.email.toLowerCase() === emailOrPhone || a.phone.replace(/\D/g, "") === emailOrPhone.replace(/\D/g, ""))
+    );
+
+    if (!match) {
+      setIsLoggingIn(false);
+      setLoginError(`No registered account found for "${loginEmail}". Please switch to "Register New Account" tab.`);
+      toast.error("Account not found. Please register first!");
+      return;
+    }
+
+    if (match.password && match.password !== pwd) {
+      setIsLoggingIn(false);
+      setLoginError("Incorrect password. Please try again.");
+      toast.error("Incorrect password!");
+      return;
+    }
+
     setIsLoggingIn(false);
+    saveCurrentUser(match);
 
-    // Save logged-in user details
-    const userObj: CustomerUser = {
-      fullName: loginEmail.includes("divesh") ? "Divesh Salve" : loginEmail.split("@")[0],
-      email: loginEmail,
-      phone: "+91 98765 43210",
-      address: "Station Road, Kalyan West",
-      city: "Kalyan",
-      pincode: "421 306",
-    };
-
-    saveCurrentUser(userObj);
-    toast.success(`Welcome back, ${userObj.fullName}! 🎉`, {
-      description: "Logged in successfully.",
+    toast.success(`Welcome back, ${match.fullName}! 🎉`, {
+      description: `Logged in as ${match.email}`,
     });
 
     navigate({ to: "/profile" });
   };
 
+  // REAL NEW USER REGISTRATION HANDLER
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setRegError("");
+
+    const cleanEmail = regEmail.trim().toLowerCase();
 
     if (!regFullName.trim()) {
       setRegError("Full Name is required.");
       return;
     }
-    if (!regEmail.trim() || !regEmail.includes("@")) {
+    if (!cleanEmail || !cleanEmail.includes("@")) {
       setRegError("Please enter a valid Email Address.");
       return;
     }
@@ -146,32 +206,44 @@ function UserLoginRegister() {
     }
 
     setIsRegistering(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsRegistering(false);
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Check if account already exists
+    const accounts = getRegisteredAccounts();
+    const existing = accounts.find((a) => a.email.toLowerCase() === cleanEmail);
+
+    if (existing) {
+      setIsRegistering(false);
+      setRegError(`An account with email "${cleanEmail}" is already registered. Please login instead.`);
+      toast.error("Account already exists! Please login.");
+      return;
+    }
 
     const newUser: CustomerUser = {
-      fullName: regFullName,
-      email: regEmail,
-      phone: regPhone,
-      address: regAddress || "Kalyan West",
-      city: regCity || "Kalyan",
-      pincode: regPincode || "421 306",
+      fullName: regFullName.trim(),
+      email: cleanEmail,
+      phone: regPhone.trim(),
+      address: regAddress.trim() || "Kalyan West",
+      city: regCity.trim() || "Kalyan",
+      pincode: regPincode.trim() || "421 306",
+      password: regPassword,
+      createdAt: new Date().toISOString(),
     };
 
-    saveCurrentUser(newUser);
-
-    // Save to list of registered users
+    // Save to localStorage registered accounts array
+    const updatedAccounts = [...accounts, newUser];
     if (typeof window !== "undefined") {
       try {
-        const rawList = localStorage.getItem("registered_users");
-        const list = rawList ? JSON.parse(rawList) : [];
-        list.push(newUser);
-        localStorage.setItem("registered_users", JSON.stringify(list));
+        localStorage.setItem(REGISTERED_ACCOUNTS_KEY, JSON.stringify(updatedAccounts));
       } catch (err) {}
     }
 
-    toast.success(`🎉 Account Created Successfully! Welcome ${regFullName}`, {
-      description: "You are now logged in. Enjoy ordering food!",
+    // Save current active logged-in user
+    saveCurrentUser(newUser);
+
+    setIsRegistering(false);
+    toast.success(`🎉 Account Registered Successfully! Welcome ${newUser.fullName}`, {
+      description: "Your new account has been created and saved.",
     });
 
     navigate({ to: "/profile" });
@@ -191,7 +263,7 @@ function UserLoginRegister() {
           </Link>
           <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5 text-secondary" />
-            <span>Customer Portal</span>
+            <span>Customer Authentication</span>
           </div>
         </div>
 
@@ -208,7 +280,7 @@ function UserLoginRegister() {
               Customer <span className="gradient-text">Portal</span>
             </h1>
             <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-              Sign in to your account or register a new account to order delicious food.
+              Sign in to your registered account or register a brand-new customer account.
             </p>
           </div>
 
@@ -218,13 +290,13 @@ function UserLoginRegister() {
                 value="login"
                 className="rounded-xl text-xs font-bold data-[state=active]:bg-primary data-[state=active]:text-black shadow-glow"
               >
-                <LogIn className="mr-1.5 h-3.5 w-3.5" /> Existing User Login
+                <LogIn className="mr-1.5 h-3.5 w-3.5" /> Login
               </TabsTrigger>
               <TabsTrigger
                 value="register"
                 className="rounded-xl text-xs font-bold data-[state=active]:bg-secondary data-[state=active]:text-black shadow-glow"
               >
-                <UserPlus className="mr-1.5 h-3.5 w-3.5" /> Register New Account
+                <UserPlus className="mr-1.5 h-3.5 w-3.5" /> New Register
               </TabsTrigger>
             </TabsList>
 
@@ -239,12 +311,12 @@ function UserLoginRegister() {
                 )}
 
                 <div className="space-y-1">
-                  <Label className="text-xs font-semibold uppercase text-muted-foreground">Email / Phone</Label>
+                  <Label className="text-xs font-semibold uppercase text-muted-foreground">Registered Email / Phone</Label>
                   <div className="relative">
                     <Mail className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      type="email"
-                      placeholder="divesh@fusion.in"
+                      type="text"
+                      placeholder="e.g. divesh@fusion.in"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       className="h-11 rounded-xl border-white/10 bg-white/5 pl-10 text-sm"
@@ -259,7 +331,7 @@ function UserLoginRegister() {
                     <Lock className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       type={showLoginPassword ? "text" : "password"}
-                      placeholder="••••••••••••"
+                      placeholder="Enter your password"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       className="h-11 rounded-xl border-white/10 bg-white/5 pl-10 pr-10 text-sm"
@@ -283,7 +355,7 @@ function UserLoginRegister() {
                 >
                   {isLoggingIn ? (
                     <span className="flex items-center gap-2">
-                      <Loader2 className="h-5 w-5 animate-spin" /> Logging in...
+                      <Loader2 className="h-5 w-5 animate-spin" /> Verifying Credentials...
                     </span>
                   ) : (
                     <span className="flex items-center gap-2">
@@ -291,14 +363,10 @@ function UserLoginRegister() {
                     </span>
                   )}
                 </Button>
-
-                <div className="rounded-xl bg-white/5 p-3 text-center text-xs text-muted-foreground border border-white/5">
-                  Demo User: <span className="text-secondary font-bold">divesh@fusion.in</span> / <span className="text-secondary font-bold">Divesh@123</span>
-                </div>
               </form>
             </TabsContent>
 
-            {/* TAB 2: REGISTER NEW ACCOUNT */}
+            {/* TAB 2: NEW REGISTER ACCOUNT */}
             <TabsContent value="register" className="space-y-4 focus-visible:outline-none">
               <form onSubmit={handleRegisterSubmit} className="space-y-3">
                 {regError && (
@@ -423,11 +491,11 @@ function UserLoginRegister() {
                 >
                   {isRegistering ? (
                     <span className="flex items-center gap-2">
-                      <Loader2 className="h-5 w-5 animate-spin" /> Creating Account...
+                      <Loader2 className="h-5 w-5 animate-spin" /> Saving New Account...
                     </span>
                   ) : (
                     <span className="flex items-center gap-2">
-                      <UserPlus className="h-4 w-4" /> Create & Register Account
+                      <UserPlus className="h-4 w-4" /> Create & Register New Account
                     </span>
                   )}
                 </Button>
