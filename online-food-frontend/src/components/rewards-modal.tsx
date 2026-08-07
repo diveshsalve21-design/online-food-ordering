@@ -5,12 +5,12 @@ import { Gift, Sparkles, Trophy, Zap, Copy, Check, Flame, AlertCircle, RefreshCw
 import { toast } from "sonner";
 
 const PRIZES = [
-  { id: "lava", label: "🎁 FREE Lava Cake", wheelText: "🎁 FREE LAVA CAKE", code: "SCRATCHFREE", minOrder: 349, color: "#f59e0b" },
-  { id: "flat100", label: "🎟️ Flat ₹100 OFF", wheelText: "🎟️ FLAT ₹100 OFF", code: "QUIZ100", minOrder: 399, color: "#10b981" },
-  { id: "flash60", label: "⚡ 60% OFF Order", wheelText: "⚡ 60% OFF ORDER", code: "FLASH60", minOrder: 499, color: "#ef4444" },
-  { id: "freedel", label: "🛵 FREE Delivery", wheelText: "🛵 FREE DELIVERY", code: "FREEDEL", minOrder: 299, color: "#3b82f6" },
-  { id: "bogo", label: "🍕 BOGO 50% OFF", wheelText: "🍕 BOGO 50% OFF", code: "BOGO", minOrder: 449, color: "#8b5cf6" },
-  { id: "bonus", label: "💰 ₹50 Bonus Cash", wheelText: "💰 ₹50 BONUS CASH", code: "FOODFUN50", minOrder: 249, color: "#ec4899" },
+  { id: "lava", label: "🎁 FREE Lava Cake", wheelText: "🎁 FREE LAVA CAKE", code: "SCRATCHFREE", minOrder: 199, color: "#f59e0b" },
+  { id: "flat100", label: "🎟️ Flat ₹100 OFF", wheelText: "🎟️ FLAT ₹100 OFF", code: "QUIZ100", minOrder: 199, color: "#10b981" },
+  { id: "flash60", label: "⚡ 60% OFF Order", wheelText: "⚡ 60% OFF ORDER", code: "FLASH60", minOrder: 249, color: "#ef4444" },
+  { id: "freedel", label: "🛵 FREE Delivery", wheelText: "🛵 FREE DELIVERY", code: "FREEDEL", minOrder: 149, color: "#3b82f6" },
+  { id: "bogo", label: "🍕 BOGO 50% OFF", wheelText: "🍕 BOGO 50% OFF", code: "BOGO", minOrder: 249, color: "#8b5cf6" },
+  { id: "bonus", label: "💰 ₹50 Bonus Cash", wheelText: "💰 ₹50 BONUS CASH", code: "FOODFUN50", minOrder: 149, color: "#ec4899" },
 ];
 
 export function RewardsModal({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {

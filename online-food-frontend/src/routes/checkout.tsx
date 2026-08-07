@@ -148,43 +148,43 @@ function Checkout() {
     // Coupon Rules & Minimum Subtotal Enforcement
     const couponRules: Record<string, { minSubtotal: number; calc: (sub: number) => { discountAmount: number; isFreeDelivery: boolean; label: string } }> = {
       FLASH60: {
-        minSubtotal: 499,
+        minSubtotal: 249,
         calc: (sub) => ({ discountAmount: Math.min(Math.round(sub * 0.6), 150), isFreeDelivery: false, label: "Saved 60% OFF (Max ₹150)" }),
       },
       SPIN60: {
-        minSubtotal: 499,
+        minSubtotal: 249,
         calc: (sub) => ({ discountAmount: Math.min(Math.round(sub * 0.6), 150), isFreeDelivery: false, label: "Saved 60% OFF" }),
       },
       QUIZ100: {
-        minSubtotal: 399,
+        minSubtotal: 199,
         calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
       },
       FOODFUN100: {
-        minSubtotal: 399,
+        minSubtotal: 199,
         calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
       },
       REFER100: {
-        minSubtotal: 399,
+        minSubtotal: 199,
         calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
       },
       SCRATCHFREE: {
-        minSubtotal: 349,
+        minSubtotal: 199,
         calc: () => ({ discountAmount: 50, isFreeDelivery: true, label: "Free Dessert + ₹50 OFF & FREE Delivery" }),
       },
       FREEDEL: {
-        minSubtotal: 299,
+        minSubtotal: 149,
         calc: () => ({ discountAmount: 0, isFreeDelivery: true, label: "FREE Delivery Unlocked" }),
       },
       BOGO: {
-        minSubtotal: 449,
+        minSubtotal: 249,
         calc: (sub) => ({ discountAmount: Math.round(sub * 0.5), isFreeDelivery: false, label: "BOGO 50% OFF" }),
       },
       WEEKEND: {
-        minSubtotal: 449,
+        minSubtotal: 249,
         calc: (sub) => ({ discountAmount: Math.round(sub * 0.5), isFreeDelivery: false, label: "Weekend Combo 50% OFF" }),
       },
       FOODFUN50: {
-        minSubtotal: 249,
+        minSubtotal: 149,
         calc: () => ({ discountAmount: 50, isFreeDelivery: false, label: "Flat ₹50 OFF" }),
       },
     };
