@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ChevronRight, Copy, Tag } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/offers")({
   head: () => ({ meta: [{ title: "Offers · FoodFusion" }] }),
@@ -16,18 +17,52 @@ const offers = [
 ];
 
 function Offers() {
+  const navigate = useNavigate();
+
+  const handleApplyOffer = (code: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+    }
+    toast.success(`Coupon "${code}" copied to clipboard!`, {
+      description: "Use it at checkout for instant discount.",
+      action: {
+        label: "Go to Menu",
+        onClick: () => navigate({ to: "/menu" }),
+      },
+    });
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6">
-      <h1 className="text-3xl font-black">All offers</h1>
-      <p className="mt-1 text-muted-foreground">Handpicked deals updated every hour.</p>
-      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl shadow-glow" style={{ background: "var(--gradient-sunset)" }}>
+          <Tag className="h-5 w-5 text-[oklch(0.16_0.03_265)]" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-black">All Offers & Coupons</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Click any card to copy code and claim your discount.</p>
+        </div>
+      </div>
+
+      <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {offers.map((o) => (
-          <div key={o.code} className="card-lift card-lift-hover overflow-hidden rounded-3xl p-6 text-primary-foreground shadow-glow" style={{ background: o.g }}>
-            <div className="text-xs font-semibold opacity-80">{o.t}</div>
+          <div
+            key={o.code}
+            onClick={() => handleApplyOffer(o.code)}
+            className="card-lift card-lift-hover cursor-pointer overflow-hidden rounded-3xl p-6 text-primary-foreground shadow-glow transition-all active:scale-[0.98]"
+            style={{ background: o.g }}
+          >
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-90">{o.t}</div>
             <div className="mt-2 text-2xl font-black leading-tight">{o.d}</div>
             <div className="mt-8 flex items-center justify-between">
-              <span className="rounded-full bg-black/25 px-3 py-1 text-xs font-bold tracking-wider">CODE · {o.code}</span>
-              <ChevronRight className="h-5 w-5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-black/30 px-3.5 py-1.5 text-xs font-bold tracking-wider backdrop-blur">
+                <Copy className="h-3.5 w-3.5" />
+                {o.code}
+              </span>
+              <div className="flex items-center text-xs font-bold gap-1 bg-white/20 px-3 py-1.5 rounded-full backdrop-blur hover:bg-white/30">
+                <span>Claim</span>
+                <ChevronRight className="h-4 w-4" />
+              </div>
             </div>
           </div>
         ))}

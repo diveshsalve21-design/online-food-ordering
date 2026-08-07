@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Flame, MapPin, Search, ShoppingBag, Sparkles, User } from "lucide-react";
+import { Flame, MapPin, Search, ShoppingBag, Sparkles, User, Building2 } from "lucide-react";
 import { useCart, inr } from "@/lib/cart";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ const nav = [
   { to: "/offers", label: "Offers" },
   { to: "/rewards", label: "Rewards" },
   { to: "/orders", label: "Orders" },
+  { to: "/hotel/login", label: "Hotel Login" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -37,14 +38,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Flame className="h-5 w-5 text-[oklch(0.16_0.03_265)]" />
               </div>
               <div className="text-lg font-black tracking-tight">
-                Food<span className="gradient-text">Fusion</span>
+                Online Food <span className="gradient-text">Ordering System</span>
               </div>
             </Link>
 
             <div className="ml-4 hidden items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-muted-foreground md:flex">
               <MapPin className="h-3.5 w-3.5 text-primary" />
-              <span className="text-foreground">Bengaluru</span>
-              <span className="opacity-60">· Koramangala</span>
+              <span className="text-foreground">Kalyan</span>
+              <span className="opacity-60">· Maharashtra (421 306)</span>
             </div>
 
             <nav className="ml-auto hidden items-center gap-1 lg:flex">
@@ -185,13 +186,13 @@ function SiteFooter() {
             <div className="grid h-9 w-9 place-items-center rounded-xl" style={{ background: "var(--gradient-sunset)" }}>
               <Flame className="h-5 w-5 text-[oklch(0.16_0.03_265)]" />
             </div>
-            <div className="text-lg font-black">Food<span className="gradient-text">Fusion</span></div>
+            <div className="text-lg font-black">Online Food <span className="gradient-text">Ordering System</span></div>
           </div>
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">
             Craft-forward food delivery. Discover restaurants, plan meals with AI, earn rewards.
           </p>
         </div>
-        <FooterCol title="Support" links={["Privacy Policy", "Terms", "FAQs", "Help Center"]} />
+        <FooterCol title="Support" links={[{ label: "Privacy Policy", to: "#" }, { label: "Terms", to: "#" }, { label: "FAQs", to: "#" }, { label: "Hotel Partner Login", to: "/hotel/login" }]} />
         <div>
           <div className="text-sm font-semibold">Newsletter</div>
           <p className="mt-2 text-xs text-muted-foreground">Weekly drops, offers & new spots.</p>
@@ -210,13 +211,15 @@ function SiteFooter() {
     </footer>
   );
 }
-function FooterCol({ title, links }: { title: string; links: string[] }) {
+function FooterCol({ title, links }: { title: string; links: { label: string; to: string }[] }) {
   return (
     <div>
       <div className="text-sm font-semibold">{title}</div>
       <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
         {links.map((l) => (
-          <li key={l}><a href="#" className="hover:text-foreground">{l}</a></li>
+          <li key={l.label}>
+            <Link to={l.to} className="hover:text-foreground">{l.label}</Link>
+          </li>
         ))}
       </ul>
     </div>

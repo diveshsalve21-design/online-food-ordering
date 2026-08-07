@@ -16,6 +16,8 @@ import { Route as OffersRouteImport } from './routes/offers'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as HotelDashboardRouteImport } from './routes/hotel/dashboard'
+import { Route as HotelLoginRouteImport } from './routes/hotel/login'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +54,16 @@ const RewardsRoute = RewardsRouteImport.update({
   path: '/rewards',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HotelDashboardRoute = HotelDashboardRouteImport.update({
+  id: '/hotel/dashboard',
+  path: '/hotel/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HotelLoginRoute = HotelLoginRouteImport.update({
+  id: '/hotel/login',
+  path: '/hotel/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +73,8 @@ export interface FileRoutesByFullPath {
   '/orders': typeof OrdersRoute
   '/profile': typeof ProfileRoute
   '/rewards': typeof RewardsRoute
+  '/hotel/dashboard': typeof HotelDashboardRoute
+  '/hotel/login': typeof HotelLoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +84,8 @@ export interface FileRoutesByTo {
   '/orders': typeof OrdersRoute
   '/profile': typeof ProfileRoute
   '/rewards': typeof RewardsRoute
+  '/hotel/dashboard': typeof HotelDashboardRoute
+  '/hotel/login': typeof HotelLoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +96,8 @@ export interface FileRoutesById {
   '/orders': typeof OrdersRoute
   '/profile': typeof ProfileRoute
   '/rewards': typeof RewardsRoute
+  '/hotel/dashboard': typeof HotelDashboardRoute
+  '/hotel/login': typeof HotelLoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +109,8 @@ export interface FileRouteTypes {
     | '/orders'
     | '/profile'
     | '/rewards'
+    | '/hotel/dashboard'
+    | '/hotel/login'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +120,8 @@ export interface FileRouteTypes {
     | '/orders'
     | '/profile'
     | '/rewards'
+    | '/hotel/dashboard'
+    | '/hotel/login'
   id:
     | '__root__'
     | '/'
@@ -109,6 +131,8 @@ export interface FileRouteTypes {
     | '/orders'
     | '/profile'
     | '/rewards'
+    | '/hotel/dashboard'
+    | '/hotel/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +143,8 @@ export interface RootRouteChildren {
   OrdersRoute: typeof OrdersRoute
   ProfileRoute: typeof ProfileRoute
   RewardsRoute: typeof RewardsRoute
+  HotelDashboardRoute: typeof HotelDashboardRoute
+  HotelLoginRoute: typeof HotelLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +198,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RewardsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hotel/dashboard': {
+      id: '/hotel/dashboard'
+      path: '/hotel/dashboard'
+      fullPath: '/hotel/dashboard'
+      preLoaderRoute: typeof HotelDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hotel/login': {
+      id: '/hotel/login'
+      path: '/hotel/login'
+      fullPath: '/hotel/login'
+      preLoaderRoute: typeof HotelLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +223,8 @@ const rootRouteChildren: RootRouteChildren = {
   OrdersRoute: OrdersRoute,
   ProfileRoute: ProfileRoute,
   RewardsRoute: RewardsRoute,
+  HotelDashboardRoute: HotelDashboardRoute,
+  HotelLoginRoute: HotelLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
