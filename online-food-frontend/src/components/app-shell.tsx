@@ -13,6 +13,7 @@ const nav = [
   { to: "/offers", label: "Offers" },
   { to: "/rewards", label: "Rewards" },
   { to: "/orders", label: "Orders" },
+  { to: "/login", label: "User Login" },
   { to: "/hotel/login", label: "Hotel Login" },
 ];
 
