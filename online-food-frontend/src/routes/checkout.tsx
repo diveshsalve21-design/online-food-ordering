@@ -70,6 +70,16 @@ function Checkout() {
     }
   }, []);
 
+  // Auto-open Spin & Win Rewards Modal when Order is Confirmed
+  useEffect(() => {
+    if (placed) {
+      const timer = setTimeout(() => {
+        setShowRewardsModal(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [placed]);
+
   // Payment method selection
   const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "upi" | "card" | "cod">("razorpay");
 
