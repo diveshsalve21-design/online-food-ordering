@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Fusion - Vertical Mobile Presentation Slides (Portrait PDF)</title>
+  <style>
+    /* STRICT PORTRAIT VERTICAL PAGE DIMENSIONS FOR MOBILE PDF */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      html, body {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+      .no-print-bar { display: none !important; }
+      .slides-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+      }
+      .slide {
+        width: 210mm !important;
+        height: 297mm !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .no-print-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      z-index: 9999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .btn-print {
+      background: #ef4444;
+      color: #ffffff;
+      font-weight: bold;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .slides-container {
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding-bottom: 40px;
+    }
+    .slide {
+      width: 794px;
+      height: 1123px; /* Standard A4 Portrait Aspect Ratio */
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+    }
+    .v2v-logo {
+      position: absolute;
+      top: 25px;
+      left: 35px;
+      width: 60px;
+      height: 60px;
+      background: #dc2626;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 20px;
+      border: 4px solid #fca5a5;
+      box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+    }
+    .slide-header {
+      margin-left: 110px;
+      margin-top: 25px;
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 10px;
+      width: calc(100% - 145px);
+    }
+    .slide-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+      line-height: 1.25;
+    }
+    .slide-body {
+      flex: 1;
+      padding: 30px 40px 90px 40px;
+      position: relative;
+      z-index: 5;
+    }
+    .bottom-banner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #fca5a5;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      padding: 0 35px;
+      color: #881337;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .slide-number {
+      position: absolute;
+      bottom: 65px;
+      left: 40px;
+      font-size: 13px;
+      color: #64748b;
+      font-weight: bold;
+    }
+
+    /* SLIDE 1 STYLES */
+    .logo-box {
+      width: 100%;
+      height: 180px;
+      background: #e2e8f0;
+      border: 2px dashed #94a3b8;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo-badge {
+      background: #dc2626;
+      color: #fff;
+      font-size: 28px;
+      font-weight: 900;
+      padding: 8px 25px;
+      border-radius: 50px;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 15px rgba(220,38,38,0.3);
+    }
+    .details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    .detail-item {
+      font-size: 20px;
+      color: #0f172a;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 16px 20px;
+      border-radius: 10px;
+    }
+    .detail-item strong {
+      color: #0f172a;
+      font-size: 20px;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .detail-val {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    /* FEATURE CARDS FOR PORTRAIT */
+    .feature-card {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-left: 5px solid #ef4444;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+    .feature-card h4 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: #0f172a;
+    }
+    .feature-card p {
+      margin: 0;
+      font-size: 14.5px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    /* TEAM TABLE FOR PORTRAIT */
+    .team-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .team-table th, .team-table td {
+      border: 1px solid #cbd5e1;
+      padding: 14px;
+      font-size: 16px;
+      text-align: left;
+    }
+    .team-table th {
+      background-color: #fca5a5;
+      color: #881337;
+      font-weight: bold;
+    }
+    .team-table td.name {
+      color: #dc2626;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print-bar">
+    <span>📱 <strong>Food Fusion Vertical Mobile Presentation Slides</strong> (Portrait Mode Fixed)</span>
+    <button class="btn-print" onclick="window.print()">📥 Print / Save Vertical PDF</button>
+  </div>
+
+  <div class="slides-container">
+
+    <!-- SLIDE 1: VERTICAL TITLE SLIDE -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Basic Details of Team & Problem Statement</h1>
+      </div>
+      <div class="slide-body">
+        <div class="logo-box">
+          <div class="logo-badge">🍔 Food Fusion</div>
+          <div>Online Food Ordering System</div>
+        </div>
+        <div class="details-list">
+          <div class="detail-item">
+            <strong>Problem Statement Title:</strong>
+            <span class="detail-val">Multi-Restaurant Ordering Complexity, High Delivery Fees & Group Order Friction</span>
+          </div>
+          <div class="detail-item">
+            <strong>Team Name:</strong>
+            <span class="detail-val">Team Food Fusion Innovators</span>
+          </div>
+          <div class="detail-item">
+            <strong>Team Leader Name:</strong>
+            <span class="detail-val">Divesh Salve</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">1</div>
+      <div class="bottom-banner">Food Fusion - Next-Generation Online Food Delivery System</div>
+    </div>
+
+    <!-- SLIDE 2: VERTICAL PROPOSED SOLUTION -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Food Fusion – Proposed Solution</h1>
+      </div>
+      <div class="slide-body">
+        <div class="feature-card">
+          <h4>🍕 Multi-Hotel Single Cart Engine</h4>
+          <p>Add dishes from multiple restaurants into 1 single cart with combined delivery fee discounts.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🤖 AI Delivery Support Chatbot</h4>
+          <p>Floating AI assistant providing real-time order status, coupon help & instant resolution.</p>
+        </div>
+        <div class="feature-card">
+          <h4>👥 AI Group Order Room & QR Code</h4>
+          <p>Friends scan QR code (<code>FF-ROOM-9821</code>) to add items & auto-split bills per member.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🎡 Gamified 3D Fortune Wheel</h4>
+          <p>Spin wheel rewards with 1 daily spin limit + bonus spin unlocked on food orders.</p>
+        </div>
+
+        <div style="margin-top: 20px; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 15px; background: #f8fafc; text-align: center;">
+          <div style="font-weight: bold; font-size: 15px; color: #0f172a; margin-bottom: 10px;">Process Flow Diagram</div>
+          <svg width="100%" height="240" viewBox="0 0 500 240">
+            <rect x="20" y="20" width="210" height="45" rx="8" fill="#ef4444" />
+            <text x="125" y="47" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">1. Select Dishes (Multi-Hotel)</text>
+
+            <rect x="270" y="20" width="210" height="45" rx="8" fill="#3b82f6" />
+            <text x="375" y="47" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">2. AI Group Room QR</text>
+
+            <rect x="20" y="95" width="210" height="45" rx="8" fill="#10b981" />
+            <text x="125" y="122" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">3. Auto Bill Splitter</text>
+
+            <rect x="270" y="95" width="210" height="45" rx="8" fill="#8b5cf6" />
+            <text x="375" y="122" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">4. Python Savings Math</text>
+
+            <rect x="20" y="170" width="210" height="45" rx="8" fill="#f59e0b" />
+            <text x="125" y="197" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">5. Razorpay Payment</text>
+
+            <rect x="270" y="170" width="210" height="45" rx="8" fill="#ec4899" />
+            <text x="375" y="197" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">6. 3D Spin Reward</text>
+          </svg>
+          <div style="font-size: 12px; color: #64748b; font-weight: bold;">Figure No 01 - Process Flow Diagram</div>
+        </div>
+      </div>
+      <div class="slide-number">2</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 3: VERTICAL TECH STACK & USP -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Tech Stack & USP</h1>
+      </div>
+      <div class="slide-body">
+        <div style="background: #fca5a5; opacity: 0.95; border-radius: 12px; padding: 25px; margin-bottom: 25px; color: #0f172a;">
+          <h3 style="margin-top: 0; color: #881337; font-size: 20px;">Libraries & Technologies Used</h3>
+          <ul style="font-size: 15px; line-height: 1.8; margin: 0; padding-left: 20px;">
+            <li><strong>Frontend UI:</strong> React 19, TypeScript, TanStack Router</li>
+            <li><strong>AI Assistant:</strong> Floating AI Delivery Support Bot Engine</li>
+            <li><strong>Backend REST API:</strong> Python 3.11 (FastAPI / Flask <code>server.py</code>)</li>
+            <li><strong>Server Engine:</strong> TanStack Start / Nitro SSR Engine</li>
+            <li><strong>Database & Auth:</strong> Supabase Database SDK + Local Persistence Store</li>
+            <li><strong>Payments:</strong> Razorpay Sandbox Payment Portal</li>
+          </ul>
+        </div>
+
+        <div style="background: #fca5a5; opacity: 0.95; border-radius: 12px; padding: 25px; color: #0f172a;">
+          <h3 style="margin-top: 0; color: #881337; font-size: 20px;">Existing Projects vs Food Fusion USP</h3>
+          <ul style="font-size: 15px; line-height: 1.8; margin: 0; padding-left: 20px;">
+            <li><strong>Existing Platforms (Zomato / Swiggy):</strong>
+              <br>• Restricted to 1 hotel per order (double delivery fees).
+              <br>• Manual bill calculations during group dining.
+            </li>
+            <li style="margin-top: 8px;"><strong>Food Fusion USP:</strong>
+              <br>• <strong>Multi-Hotel Single Cart:</strong> Order from 2+ hotels in 1 checkout.
+              <br>• <strong>AI Group Room & QR Code:</strong> Automated bill splitter per member.
+              <br>• <strong>3D SVG Fortune Wheel:</strong> Instant coupon unlocks.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-number">3</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 4: VERTICAL UNIQUE FEATURES -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Key Unique Features & Innovations</h1>
+      </div>
+      <div class="slide-body">
+        <div class="feature-card">
+          <h4>🍕 1. Multi-Hotel Single Cart Engine</h4>
+          <p>Combine dishes from multiple partner restaurants in 1 single checkout. Saves ₹39+ per extra hotel on delivery fees.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🤖 2. AI Delivery Support Chatbot</h4>
+          <p>Floating interactive AI assistant providing real-time order tracking, coupon help & instant resolution.</p>
+        </div>
+        <div class="feature-card">
+          <h4>👥 3. AI Group Order Room & QR Bill Splitter</h4>
+          <p>Friends scan QR code (<code>FF-ROOM-9821</code>) from their phones to join room and view individual bill splits.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🎡 4. Gamified 3D Vector Fortune Wheel</h4>
+          <p>Interactive 3D SVG spin wheel with food sticker emojis & bonus spin credits awarded on food orders.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🔍 5. Double-Click 300% HD Image Zoom Lightbox</h4>
+          <p>Full-screen 300% zoom controls for food dish photography before adding to cart.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🥦 6. Instant Pure Veg vs Non-Veg Mode</h4>
+          <p>One-click dietary filter with green Pure Veg badges and 1000px Ultra-HD photos.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🐍 7. Python Full-Stack REST API Service</h4>
+          <p>Python 3.11 backend service (<code>server.py</code>) serving AI meal recommendations & savings math algorithms.</p>
+        </div>
+      </div>
+      <div class="slide-number">4</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 5: VERTICAL REFERENCE -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Reference</h1>
+      </div>
+      <div class="slide-body">
+        <div style="font-size: 16px; color: #475569; font-weight: bold; margin-bottom: 20px;">
+          References used (documentation, GitHub repository, and technical specifications):
+        </div>
+        <div class="feature-card">
+          <h4>GitHub Code Repository</h4>
+          <p><a href="https://github.com/diveshsalve21-design/online-food-ordering.git" target="_blank" style="color:#dc2626; font-weight:bold;">https://github.com/diveshsalve21-design/online-food-ordering.git</a></p>
+        </div>
+        <div class="feature-card">
+          <h4>Python REST API Framework</h4>
+          <p>FastAPI & Python 3.11 Documentation (<code>fastapi.tiangolo.com</code>)</p>
+        </div>
+        <div class="feature-card">
+          <h4>React & TypeScript Framework</h4>
+          <p>React 19 Docs & TanStack Start SSR Server Engine (<code>tanstack.com/start</code>)</p>
+        </div>
+        <div class="feature-card">
+          <h4>Database & Authentication SDK</h4>
+          <p>Supabase JavaScript SDK Documentation (<code>supabase.com/docs</code>)</p>
+        </div>
+        <div class="feature-card">
+          <h4>UI Design System</h4>
+          <p>Tailwind CSS & Glassmorphism Design Specs (<code>tailwindcss.com</code>)</p>
+        </div>
+      </div>
+      <div class="slide-number">5</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 6: VERTICAL TEAM DETAILS -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Team Member Details</h1>
+      </div>
+      <div class="slide-body">
+        <table class="team-table">
+          <thead>
+            <tr>
+              <th>Member Name</th>
+              <th>Branch</th>
+              <th>Stream</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">Divesh Salve (Leader)</td>
+              <td>Diploma</td>
+              <td>Computer Engineering (CO)</td>
+            </tr>
+            <tr>
+              <td class="name">Pritesh Kanitkar</td>
+              <td>Diploma</td>
+              <td>Computer Engineering (CO)</td>
+            </tr>
+            <tr>
+              <td class="name">Rashmin Oak</td>
+              <td>Diploma</td>
+              <td>Computer Engineering (CO)</td>
+            </tr>
+            <tr>
+              <td class="name">Himanshu Medhe</td>
+              <td>Diploma</td>
+              <td>Computer Engineering (CO)</td>
+            </tr>
+            <tr>
+              <td class="name">Swaraj Angre</td>
+              <td>Diploma</td>
+              <td>Electronics & Telecommunication (EXTC)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="slide-number">6</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+  </div>
+
+</body>
+</html>

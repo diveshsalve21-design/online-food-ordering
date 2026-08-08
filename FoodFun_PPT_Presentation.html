@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Food Fusion - Widescreen Presentation Slides</title>
+  <title>Food Fusion - Presentation Slides (Including AI Chatbot Feature)</title>
   <style>
     @page {
       size: 297mm 210mm;
@@ -262,32 +262,32 @@
       margin: 0;
     }
 
-    /* UNIQUE FEATURES SLIDE STYLES */
+    /* UNIQUE FEATURES SLIDE STYLES (3 COLUMNS / 7 CARDS) */
     .uf-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 14px;
     }
     .uf-card {
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
       border-left: 5px solid #ef4444;
       border-radius: 10px;
-      padding: 16px 20px;
+      padding: 12px 16px;
     }
     .uf-card h4 {
-      margin: 0 0 6px 0;
-      font-size: 18px;
+      margin: 0 0 4px 0;
+      font-size: 16.5px;
       color: #0f172a;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .uf-card p {
       margin: 0;
-      font-size: 14px;
+      font-size: 13px;
       color: #475569;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     /* SLIDE 5 STYLES */
@@ -330,7 +330,7 @@
 <body>
 
   <div class="no-print-bar">
-    <span>📊 <strong>Food Fusion PowerPoint Presentation Slides</strong> (Project Name: Food Fusion)</span>
+    <span>📊 <strong>Food Fusion PowerPoint Presentation Slides</strong> (Including AI Delivery Support Chatbot)</span>
     <button class="btn-print" onclick="window.print()">📥 Print / Save PDF Slides</button>
   </div>
 
@@ -377,6 +377,7 @@
             <ul class="solution-features">
               <li><strong>🍕 Multi-Hotel Single Cart Engine:</strong> Add dishes from multiple restaurants into 1 single cart with combined delivery fee discounts.</li>
               <li><strong>👥 AI Group Order Room & QR Code:</strong> Friends scan QR code (<code>FF-ROOM-9821</code>) to add items & auto-split bills.</li>
+              <li><strong>🤖 AI Delivery Support Chatbot:</strong> Floating AI assistant for instant order status, coupon help & support resolution.</li>
               <li><strong>🎡 Gamified 3D Fortune Wheel:</strong> Spin wheel rewards (1 daily spin + bonus spin on food orders).</li>
               <li><strong>🔍 Double-Click HD Image Zoom Lightbox:</strong> Full-screen 300% zoom controls for food dish images.</li>
               <li><strong>🥦 Pure Veg / Non-Veg Mode:</strong> One-click dietary filter.</li>
@@ -441,11 +442,12 @@
             <h3>Libraries and Technologies Used</h3>
             <ul>
               <li><strong>Frontend:</strong> React 19, TypeScript, TanStack Router</li>
-              <li><strong>Styling & Motion:</strong> Tailwind CSS, Glassmorphic Design, SVG Geometry Engine</li>
+              <li><strong>AI Assistant:</strong> Floating AI Delivery Support Bot Engine</li>
+              <li><strong>Styling & Motion:</strong> Tailwind CSS, Glassmorphism, SVG Engine</li>
               <li><strong>Backend API:</strong> Python 3.11 (FastAPI / Flask <code>server.py</code>)</li>
               <li><strong>Server Engine:</strong> TanStack Start / Nitro SSR Engine</li>
-              <li><strong>Database & Auth:</strong> Supabase Database SDK + Local Persistence Store</li>
-              <li><strong>Payments & Icons:</strong> Razorpay Sandbox, Lucide React Icons, Radix UI</li>
+              <li><strong>Database & Auth:</strong> Supabase DB SDK + Local Persistence Store</li>
+              <li><strong>Payments & Icons:</strong> Razorpay Sandbox, Lucide React Icons</li>
             </ul>
           </div>
 
@@ -455,11 +457,12 @@
               <li><strong>Existing Platforms (Zomato / Swiggy):</strong>
                 <br>• Restricted to 1 hotel per order (double delivery fees).
                 <br>• Manual bill calculations during group dining.
-                <br>• Static promotional banners without gamification.
+                <br>• Static support forms with delayed resolution.
               </li>
               <li style="margin-top: 10px;"><strong>Food Fusion Unique Selling Proposition (USP):</strong>
                 <br>• <strong>Multi-Hotel Single Cart:</strong> Order from 2+ hotels in 1 checkout.
                 <br>• <strong>AI Group Room & QR Code:</strong> Automated bill splitter per member.
+                <br>• <strong>AI Delivery Support Chatbot:</strong> Instant automated assistance.
                 <br>• <strong>Interactive 3D Spin Wheel:</strong> Instant coupon unlocks.
               </li>
             </ul>
@@ -470,7 +473,7 @@
       <div class="bottom-banner"></div>
     </div>
 
-    <!-- SLIDE 4: UNIQUE FEATURES -->
+    <!-- SLIDE 4: DEDICATED UNIQUE FEATURES & INNOVATIONS SLIDE (INCLUDING AI CHATBOT) -->
     <div class="slide">
       <div class="v2v-logo">V2V</div>
       <div class="slide-header">
@@ -481,6 +484,10 @@
           <div class="uf-card">
             <h4>🍕 Multi-Hotel Single Cart Engine</h4>
             <p>Combine dishes from multiple partner restaurants in 1 single checkout. Automatically calculates combined delivery savings (saves ₹39+ per extra hotel).</p>
+          </div>
+          <div class="uf-card">
+            <h4>🤖 AI Delivery Support Chatbot</h4>
+            <p>Floating interactive AI assistant (<code>Food Fusion AI Delivery Assistant</code>) providing real-time order tracking, coupon assistance, and instant query resolution.</p>
           </div>
           <div class="uf-card">
             <h4>👥 AI Group Order Room & QR Bill Splitter</h4>
@@ -497,10 +504,6 @@
           <div class="uf-card">
             <h4>🥦 Instant Pure Veg vs Non-Veg Dietary Mode</h4>
             <p>One-click instant theme transformation filtering vegetarian items with green Pure Veg badges and 1000px Ultra-HD photography.</p>
-          </div>
-          <div class="uf-card">
-            <h4>🐍 Python Full-Stack REST API Service (<code>server.py</code>)</h4>
-            <p>Python 3.11 backend service providing REST API endpoints for AI meal recommendations, order analytics, and cart savings algorithms.</p>
           </div>
         </div>
       </div>
