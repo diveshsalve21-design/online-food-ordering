@@ -1,4 +1,3 @@
-```
 # Python
 __pycache__/
 *.py[cod]
@@ -40,6 +39,7 @@ htmlcov/
 .env.local
 .env.*
 !online-food-backend/.env.example
+!online-food-frontend/.env.example
 .venv/
 venv/
 ENV/
@@ -57,4 +57,19 @@ Thumbs.db
 
 # Logs
 *.log
-```
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Node / Build outputs
+node_modules/
+bun.lock
+package-lock.json
+.output/
+dist/
+.wrangler/
+.tanstack/
+.vercel/
+_legacy_static/
