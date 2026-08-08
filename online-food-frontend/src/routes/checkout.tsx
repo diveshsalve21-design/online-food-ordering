@@ -70,6 +70,13 @@ function Checkout() {
     }
   }, []);
 
+  // Payment method selection
+  const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "upi" | "card" | "cod">("razorpay");
+
+  // Order status
+  const [placed, setPlaced] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState<{ paymentId: string; orderId: string; paidAmount?: number } | null>(null);
+
   // Auto-open Spin & Win Rewards Modal when Order is Confirmed
   useEffect(() => {
     if (placed) {
@@ -79,13 +86,6 @@ function Checkout() {
       return () => clearTimeout(timer);
     }
   }, [placed]);
-
-  // Payment method selection
-  const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "upi" | "card" | "cod">("razorpay");
-
-  // Order status
-  const [placed, setPlaced] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState<{ paymentId: string; orderId: string; paidAmount?: number } | null>(null);
 
   // Coupon / Redeem Code State
   const [couponCode, setCouponCode] = useState("");
