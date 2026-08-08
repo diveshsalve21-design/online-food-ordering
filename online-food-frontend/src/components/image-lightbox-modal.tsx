@@ -38,7 +38,7 @@ export function ImageLightboxModal({
         price: data.price,
         image: data.src,
         veg: data.veg ?? false,
-        restaurantName: data.restaurantName ?? "FoodFun Kitchen",
+        restaurantName: data.restaurantName ?? "Food Fusion Kitchen",
       });
       toast.success(`Added 1x ${data.title} to cart!`);
     }

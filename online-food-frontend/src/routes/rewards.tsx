@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/rewards")({
-  head: () => ({ meta: [{ title: "Rewards · FoodFun" }] }),
+  head: () => ({ meta: [{ title: "Rewards · Food Fusion" }] }),
   component: Rewards,
 });
 
@@ -47,7 +47,7 @@ function Rewards() {
           </div>
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-primary">
-              FoodFun Rewards
+              Food Fusion Rewards
             </div>
             <div className="text-4xl font-black text-foreground">
               {points} <span className="text-lg font-semibold text-secondary">pts</span>

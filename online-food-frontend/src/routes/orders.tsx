@@ -31,7 +31,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/orders")({
-  head: () => ({ meta: [{ title: "Live Orders & Tracking · FoodFun" }] }),
+  head: () => ({ meta: [{ title: "Live Orders & Tracking · Food Fusion" }] }),
   component: Orders,
 });
 
@@ -371,7 +371,7 @@ function Orders() {
             <div className="relative z-10 flex justify-between items-center text-xs font-semibold">
               <div className="flex items-center gap-2 rounded-xl bg-black/60 backdrop-blur-md px-3 py-1.5 border border-white/10 shadow-lg">
                 <Utensils className="h-3.5 w-3.5 text-amber-400" />
-                <span>FoodFun Hub</span>
+                <span>Food Fusion Hub</span>
               </div>
               <div className="flex items-center gap-2 rounded-xl bg-black/60 backdrop-blur-md px-3 py-1.5 border border-white/10 shadow-lg">
                 <MapPin className="h-3.5 w-3.5 text-emerald-400 animate-bounce" />

@@ -35,7 +35,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/hotel/dashboard")({
   head: () => ({
     meta: [
-      { title: "Hotel Partner Dashboard · FoodFun" },
+      { title: "Hotel Partner Dashboard · Food Fusion" },
       { name: "description", content: "Manage hotel partner orders, revenue & live stock inventory." },
     ],
   }),

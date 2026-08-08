@@ -43,7 +43,7 @@ export function DeliveryChatBot() {
     {
       id: "1",
       sender: "bot",
-      text: `Hello ${activeUser?.fullName ? activeUser.fullName.split(" ")[0] : "there"}! 👋 I am your FoodFun AI Delivery Assistant. How can I help you with your order today?`,
+      text: `Hello ${activeUser?.fullName ? activeUser.fullName.split(" ")[0] : "there"}! 👋 I am your Food Fusion AI Delivery Assistant. How can I help you with your order today?`,
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);

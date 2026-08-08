@@ -66,7 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Flame className="h-5 w-5 text-[oklch(0.16_0.03_265)]" />
               </div>
               <div className="text-xl font-black tracking-tight">
-                Food<span className="gradient-text">Fun</span>
+                Food <span className="gradient-text">Fusion</span>
               </div>
             </Link>
 
@@ -340,9 +340,9 @@ function SiteFooter() {
     <footer className="border-t border-white/10 bg-black/40 py-8 text-xs text-muted-foreground">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2 font-bold text-foreground">
-          <Flame className="h-4 w-4 text-primary" /> FoodFun Delivery System
+          <Flame className="h-4 w-4 text-primary" /> Food Fusion Delivery System
         </div>
-        <div>© 2026 FoodFun. All rights reserved.</div>
+        <div>© 2026 Food Fusion. All rights reserved.</div>
       </div>
     </footer>
   );

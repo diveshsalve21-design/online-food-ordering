@@ -108,7 +108,7 @@ export function RewardsModal({ open, onOpenChange }: { open: boolean; onOpenChan
         <DialogHeader className="text-center">
           <DialogTitle className="text-xl font-black text-foreground flex items-center justify-center gap-2">
             <Trophy className="h-6 w-6 text-amber-400 animate-bounce" />
-            FoodFun Spin & Win Rewards!
+            Food Fusion Spin & Win Rewards!
           </DialogTitle>
           
           {/* 🎟️ SPIN LIMIT COUNTER BADGE */}

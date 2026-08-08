@@ -29,10 +29,10 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/hotel/login")({
   head: () => ({
     meta: [
-      { title: "Hotel Partner Login & Registration · FoodFun" },
+      { title: "Hotel Partner Login & Registration · Food Fusion" },
       {
         name: "description",
-        content: "Partner portal for restaurant and hotel partner management on FoodFun.",
+        content: "Partner portal for restaurant and hotel partner management on Food Fusion.",
       },
     ],
   }),
@@ -600,7 +600,7 @@ function HotelLogin() {
 
           <div className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground border-t border-white/10 pt-4">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            <span>Encrypted Partner Portal · FoodFun Merchant Services</span>
+            <span>Encrypted Partner Portal · Food Fusion Merchant Services</span>
           </div>
         </div>
       </div>

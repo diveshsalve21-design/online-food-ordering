@@ -32,8 +32,8 @@ import { Trophy } from "lucide-react";
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
-      { title: "Checkout · FoodFun" },
-      { name: "description", content: "Complete your food order with Razorpay test mode payment on FoodFun." },
+      { title: "Checkout · Food Fusion" },
+      { name: "description", content: "Complete your food order with Razorpay test mode payment on Food Fusion." },
     ],
   }),
   component: Checkout,
@@ -310,7 +310,7 @@ function Checkout() {
           <div>
             <h1 className="text-3xl font-black text-foreground">Order Confirmed!</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Thank you for ordering with <span className="font-bold text-primary">FoodFun</span>. Delivery to <span className="font-semibold text-foreground">{fullName} ({city})</span>.
+              Thank you for ordering with <span className="font-bold text-primary">Food Fusion</span>. Delivery to <span className="font-semibold text-foreground">{fullName} ({city})</span>.
             </p>
           </div>
 

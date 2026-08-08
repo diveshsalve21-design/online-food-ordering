@@ -1,5 +1,5 @@
 """
-FoodFun - Python Full Stack Backend REST API Service
+Food Fusion - Python Full Stack Backend REST API Service
 Built with Python 3.11+, FastAPI / Flask Architecture & Supabase / SQLite DB Engine.
 """
 
@@ -70,7 +70,7 @@ def spin_fortune_wheel_reward(user_id):
 # Mock API Endpoint Demonstration
 if __name__ == "__main__":
     print("==================================================")
-    print("🚀 FoodFun Python Full-Stack Backend Service Online")
+    print("🚀 Food Fusion Python Full-Stack Backend Service Online")
     print("==================================================")
     
     # Test Savings Math Logic

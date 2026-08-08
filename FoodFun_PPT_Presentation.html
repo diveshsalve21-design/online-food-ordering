@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Fusion - Widescreen Presentation Slides</title>
+  <style>
+    @page {
+      size: 297mm 210mm;
+      margin: 0;
+    }
+    @media print {
+      @page {
+        size: 297mm 210mm;
+        margin: 0;
+      }
+      html, body {
+        width: 297mm !important;
+        height: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+      .no-print-bar { display: none !important; }
+      .slides-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+      }
+      .slide {
+        width: 297mm !important;
+        height: 210mm !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .no-print-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      z-index: 9999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .btn-print {
+      background: #ef4444;
+      color: #ffffff;
+      font-weight: bold;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .slides-container {
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding-bottom: 40px;
+    }
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+    }
+    .v2v-logo {
+      position: absolute;
+      top: 25px;
+      left: 35px;
+      width: 65px;
+      height: 65px;
+      background: #dc2626;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 22px;
+      border: 4px solid #fca5a5;
+      box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+    }
+    .slide-header {
+      margin-left: 120px;
+      margin-top: 30px;
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 10px;
+      width: calc(100% - 150px);
+    }
+    .slide-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+    }
+    .slide-body {
+      flex: 1;
+      padding: 30px 40px 100px 40px;
+      position: relative;
+      z-index: 5;
+    }
+    .bottom-banner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #fca5a5;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      color: #881337;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .slide-number {
+      position: absolute;
+      bottom: 75px;
+      left: 40px;
+      font-size: 14px;
+      color: #64748b;
+      font-weight: bold;
+    }
+
+    /* SLIDE 1 STYLES */
+    .logo-box {
+      width: 320px;
+      height: 250px;
+      background: #e2e8f0;
+      border: 2px dashed #94a3b8;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+    }
+    .logo-badge {
+      background: #dc2626;
+      color: #fff;
+      font-size: 32px;
+      font-weight: 900;
+      padding: 10px 25px;
+      border-radius: 50px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 15px rgba(220,38,38,0.3);
+    }
+    .details-list {
+      margin-left: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    .detail-item {
+      font-size: 22px;
+      color: #0f172a;
+    }
+    .detail-item strong {
+      color: #0f172a;
+      font-size: 24px;
+    }
+    .detail-val {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    /* SLIDE 2 STYLES */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      height: 100%;
+    }
+    .solution-card {
+      border: 1.5px solid #94a3b8;
+      border-radius: 10px;
+      padding: 25px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+    }
+    .solution-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #65a30d;
+      margin-bottom: 15px;
+    }
+    .solution-features {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #334155;
+    }
+    .solution-features li {
+      margin-bottom: 10px;
+    }
+    .diagram-box {
+      border: 1.5px solid #94a3b8;
+      border-radius: 10px;
+      padding: 20px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    /* SLIDE 3 STYLES */
+    .tech-box {
+      background: #fca5a5;
+      opacity: 0.9;
+      border-radius: 12px;
+      padding: 30px;
+      height: 420px;
+      color: #0f172a;
+    }
+    .tech-box h3 {
+      font-size: 22px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #881337;
+      font-weight: 800;
+    }
+    .tech-box ul {
+      font-size: 16px;
+      line-height: 1.8;
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    /* UNIQUE FEATURES SLIDE STYLES */
+    .uf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .uf-card {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-left: 5px solid #ef4444;
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .uf-card h4 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .uf-card p {
+      margin: 0;
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    /* SLIDE 5 STYLES */
+    .ref-list {
+      font-size: 18px;
+      line-height: 2.2;
+      color: #1e293b;
+      margin-top: 20px;
+    }
+    .ref-list a {
+      color: #dc2626;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* SLIDE 6 STYLES - PERFECT ALIGNED COLUMNS */
+    .team-box {
+      border: 2px solid #ef4444;
+      border-radius: 8px;
+      padding: 25px 35px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .team-row {
+      display: grid;
+      grid-template-columns: 410px 200px 1fr;
+      align-items: center;
+      font-size: 17.5px;
+      font-weight: bold;
+      border-bottom: 1px dashed #fca5a5;
+      padding-bottom: 8px;
+    }
+    .team-row .name { color: #dc2626; }
+    .team-row .branch { color: #1e293b; }
+    .team-row .stream { color: #1e293b; }
+  </style>
+</head>
+<body>
+
+  <div class="no-print-bar">
+    <span>📊 <strong>Food Fusion PowerPoint Presentation Slides</strong> (Project Name: Food Fusion)</span>
+    <button class="btn-print" onclick="window.print()">📥 Print / Save PDF Slides</button>
+  </div>
+
+  <div class="slides-container">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Basic Details of the Team and Problem Statement</h1>
+      </div>
+      <div class="slide-body" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; margin-top: 40px;">
+        <div class="logo-box">
+          <div class="logo-badge">🍔 Food Fusion</div>
+          <div>Online Food Ordering Platform</div>
+        </div>
+        <div class="details-list">
+          <div class="detail-item">
+            <strong>Problem Statement Title:</strong><br>
+            <span class="detail-val">Multi-Restaurant Ordering Complexity, High Delivery Fees & Group Order Friction</span>
+          </div>
+          <div class="detail-item">
+            <strong>Team Name:</strong> <span class="detail-val">Team Food Fusion Innovators</span>
+          </div>
+          <div class="detail-item">
+            <strong>Team Leader Name:</strong> <span class="detail-val">Divesh Salve</span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-banner">Food Fusion - Next-Generation Online Food Delivery System</div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Food Fusion – Proposed Solution</h1>
+      </div>
+      <div class="slide-body">
+        <div class="solution-grid">
+          <div class="solution-card">
+            <div class="solution-title">Proposed Solution</div>
+            <div style="font-style: italic; color: #64748b; font-size: 14px; margin-bottom: 12px;">Basic details along with features:</div>
+            <ul class="solution-features">
+              <li><strong>🍕 Multi-Hotel Single Cart Engine:</strong> Add dishes from multiple restaurants into 1 single cart with combined delivery fee discounts.</li>
+              <li><strong>👥 AI Group Order Room & QR Code:</strong> Friends scan QR code (<code>FF-ROOM-9821</code>) to add items & auto-split bills.</li>
+              <li><strong>🎡 Gamified 3D Fortune Wheel:</strong> Spin wheel rewards (1 daily spin + bonus spin on food orders).</li>
+              <li><strong>🔍 Double-Click HD Image Zoom Lightbox:</strong> Full-screen 300% zoom controls for food dish images.</li>
+              <li><strong>🥦 Pure Veg / Non-Veg Mode:</strong> One-click dietary filter.</li>
+            </ul>
+          </div>
+
+          <div class="diagram-box">
+            <div style="font-weight: bold; font-size: 16px; color: #0f172a;">Process Flow Diagram</div>
+            <svg width="100%" height="320" viewBox="0 0 500 320" style="margin: 10px 0;">
+              <!-- Step 1 -->
+              <rect x="20" y="20" width="130" height="50" rx="8" fill="#ef4444" />
+              <text x="85" y="45" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">1. Select Dishes (Multi-Hotel)</text>
+              <line x1="150" y1="45" x2="185" y2="45" stroke="#94a3b8" stroke-width="3" />
+
+              <!-- Step 2 -->
+              <rect x="190" y="20" width="130" height="50" rx="8" fill="#3b82f6" />
+              <text x="255" y="45" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">2. AI Group Room QR</text>
+              <line x1="320" y1="45" x2="355" y2="45" stroke="#94a3b8" stroke-width="3" />
+
+              <!-- Step 3 -->
+              <rect x="360" y="20" width="120" height="50" rx="8" fill="#10b981" />
+              <text x="420" y="45" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">3. Auto Bill Splitter</text>
+
+              <path d="M 420 70 L 420 120 L 85 120 L 85 150" fill="none" stroke="#94a3b8" stroke-width="3" />
+
+              <!-- Step 4 -->
+              <rect x="20" y="150" width="130" height="50" rx="8" fill="#8b5cf6" />
+              <text x="85" y="175" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">4. Python Savings Math</text>
+              <line x1="150" y1="175" x2="185" y2="175" stroke="#94a3b8" stroke-width="3" />
+
+              <!-- Step 5 -->
+              <rect x="190" y="150" width="130" height="50" rx="8" fill="#f59e0b" />
+              <text x="255" y="175" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">5. Razorpay Payment</text>
+              <line x1="320" y1="175" x2="355" y2="175" stroke="#94a3b8" stroke-width="3" />
+
+              <!-- Step 6 -->
+              <rect x="360" y="150" width="120" height="50" rx="8" fill="#ec4899" />
+              <text x="420" y="175" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">6. 3D Spin Reward</text>
+
+              <!-- Step 7 -->
+              <rect x="140" y="240" width="230" height="50" rx="8" fill="#0f172a" />
+              <text x="255" y="270" fill="#f59e0b" font-size="12" font-weight="bold" text-anchor="middle">7. Live Map Tracking (Rider Naman)</text>
+              <path d="M 420 200 L 420 220 L 255 220 L 255 240" fill="none" stroke="#94a3b8" stroke-width="3" />
+            </svg>
+            <div style="font-size: 12px; color: #64748b; font-weight: bold;">Figure No 01 - Process Flow Diagram</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">2</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Tech Stack & USP</h1>
+      </div>
+      <div class="slide-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+          <div class="tech-box">
+            <h3>Libraries and Technologies Used</h3>
+            <ul>
+              <li><strong>Frontend:</strong> React 19, TypeScript, TanStack Router</li>
+              <li><strong>Styling & Motion:</strong> Tailwind CSS, Glassmorphic Design, SVG Geometry Engine</li>
+              <li><strong>Backend API:</strong> Python 3.11 (FastAPI / Flask <code>server.py</code>)</li>
+              <li><strong>Server Engine:</strong> TanStack Start / Nitro SSR Engine</li>
+              <li><strong>Database & Auth:</strong> Supabase Database SDK + Local Persistence Store</li>
+              <li><strong>Payments & Icons:</strong> Razorpay Sandbox, Lucide React Icons, Radix UI</li>
+            </ul>
+          </div>
+
+          <div class="tech-box">
+            <h3>Existing Projects vs Food Fusion USP</h3>
+            <ul>
+              <li><strong>Existing Platforms (Zomato / Swiggy):</strong>
+                <br>• Restricted to 1 hotel per order (double delivery fees).
+                <br>• Manual bill calculations during group dining.
+                <br>• Static promotional banners without gamification.
+              </li>
+              <li style="margin-top: 10px;"><strong>Food Fusion Unique Selling Proposition (USP):</strong>
+                <br>• <strong>Multi-Hotel Single Cart:</strong> Order from 2+ hotels in 1 checkout.
+                <br>• <strong>AI Group Room & QR Code:</strong> Automated bill splitter per member.
+                <br>• <strong>Interactive 3D Spin Wheel:</strong> Instant coupon unlocks.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">3</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 4: UNIQUE FEATURES -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Food Fusion – Key Unique Features & Innovations</h1>
+      </div>
+      <div class="slide-body">
+        <div class="uf-grid">
+          <div class="uf-card">
+            <h4>🍕 Multi-Hotel Single Cart Engine</h4>
+            <p>Combine dishes from multiple partner restaurants in 1 single checkout. Automatically calculates combined delivery savings (saves ₹39+ per extra hotel).</p>
+          </div>
+          <div class="uf-card">
+            <h4>👥 AI Group Order Room & QR Bill Splitter</h4>
+            <p>Generates 4-digit room code (<code>FF-ROOM-9821</code>) and SVG QR code. Friends scan QR to join, add items, and view individual bill splits in real-time.</p>
+          </div>
+          <div class="uf-card">
+            <h4>🎡 Gamified 3D Vector Fortune Wheel</h4>
+            <p>Interactive 3D SVG spin wheel with food sticker emojis (🎁, 🎟️, ⚡, 🛵, 🍕, 💰). Enforces 1 daily spin limit + <strong>+1 bonus spin</strong> awarded on every food order.</p>
+          </div>
+          <div class="uf-card">
+            <h4>🔍 Double-Click 300% HD Image Zoom Lightbox</h4>
+            <p>Double-clicking food dish thumbnails opens a full-screen Lightbox with 300% HD zoom controls (Zoom In, Zoom Out, Reset) and 1-click cart addition.</p>
+          </div>
+          <div class="uf-card">
+            <h4>🥦 Instant Pure Veg vs Non-Veg Dietary Mode</h4>
+            <p>One-click instant theme transformation filtering vegetarian items with green Pure Veg badges and 1000px Ultra-HD photography.</p>
+          </div>
+          <div class="uf-card">
+            <h4>🐍 Python Full-Stack REST API Service (<code>server.py</code>)</h4>
+            <p>Python 3.11 backend service providing REST API endpoints for AI meal recommendations, order analytics, and cart savings algorithms.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">4</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Reference</h1>
+      </div>
+      <div class="slide-body">
+        <div style="font-size: 16px; color: #475569; font-weight: bold; margin-bottom: 20px;">
+          References used (documentation, GitHub repository, and technical specifications):
+        </div>
+        <ul class="ref-list">
+          <li><strong>GitHub Code Repository:</strong> <a href="https://github.com/diveshsalve21-design/online-food-ordering.git" target="_blank">https://github.com/diveshsalve21-design/online-food-ordering.git</a></li>
+          <li><strong>Python REST API Framework:</strong> FastAPI & Python 3.11 Documentation (<a href="https://fastapi.tiangolo.com/" target="_blank">fastapi.tiangolo.com</a>)</li>
+          <li><strong>React & TypeScript Framework:</strong> React 19 Docs & TanStack Start SSR Server Engine (<a href="https://tanstack.com/start" target="_blank">tanstack.com/start</a>)</li>
+          <li><strong>Database & Authentication SDK:</strong> Supabase JavaScript SDK Documentation (<a href="https://supabase.com/docs" target="_blank">supabase.com/docs</a>)</li>
+          <li><strong>UI Design System & Styling:</strong> Tailwind CSS & Glassmorphism Design Specs (<a href="https://tailwindcss.com/" target="_blank">tailwindcss.com</a>)</li>
+        </ul>
+      </div>
+      <div class="slide-number">5</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+    <!-- SLIDE 6: ALIGNED COLUMNS -->
+    <div class="slide">
+      <div class="v2v-logo">V2V</div>
+      <div class="slide-header">
+        <h1 class="slide-title">Team Member Details</h1>
+      </div>
+      <div class="slide-body" style="padding-top: 20px;">
+        <div class="team-box">
+          <div class="team-row">
+            <span class="name">Team Leader Name: Divesh Salve</span>
+            <span class="branch">Branch: Diploma</span>
+            <span class="stream">Stream: Computer Engineering (CO)</span>
+          </div>
+          <div class="team-row">
+            <span class="name">Team Member 1 Name: Pritesh Kanitkar</span>
+            <span class="branch">Branch: Diploma</span>
+            <span class="stream">Stream: Computer Engineering (CO)</span>
+          </div>
+          <div class="team-row">
+            <span class="name">Team Member 2 Name: Rashmin Oak</span>
+            <span class="branch">Branch: Diploma</span>
+            <span class="stream">Stream: Computer Engineering (CO)</span>
+          </div>
+          <div class="team-row">
+            <span class="name">Team Member 3 Name: Himanshu Medhe</span>
+            <span class="branch">Branch: Diploma</span>
+            <span class="stream">Stream: Computer Engineering (CO)</span>
+          </div>
+          <div class="team-row">
+            <span class="name">Team Member 4 Name: Swaraj Angre</span>
+            <span class="branch">Branch: Diploma</span>
+            <span class="stream">Stream: Electronics & Telecommunication (EXTC)</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">6</div>
+      <div class="bottom-banner"></div>
+    </div>
+
+  </div>
+
+</body>
+</html>

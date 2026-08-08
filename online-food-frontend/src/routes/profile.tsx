@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/profile")({
-  head: () => ({ meta: [{ title: "Profile · FoodFun" }] }),
+  head: () => ({ meta: [{ title: "Profile · Food Fusion" }] }),
   component: Profile,
 });
 
