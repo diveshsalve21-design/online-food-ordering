@@ -136,64 +136,58 @@ function Checkout() {
       return;
     }
 
-    // ⛔ Single-Use Check (Tracked via localStorage)
-    const usedCoupons: string[] = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("foodfun_used_coupons") || "[]") : [];
-    if (usedCoupons.includes(code)) {
-      toast.error(`⛔ Coupon Code "${code}" Already Used!`, {
-        description: "Each coupon code can only be redeemed once per account.",
-      });
-      return;
-    }
+    // Single-Use check bypassed for demo testing
 
-    // Coupon Rules & Minimum Subtotal Enforcement
+    // Coupon Rules & Dynamic Subtotal Discount Calculation (minSubtotal = 0 for instant eligibility)
     const couponRules: Record<string, { minSubtotal: number; calc: (sub: number) => { discountAmount: number; isFreeDelivery: boolean; label: string } }> = {
       FLASH60: {
-        minSubtotal: 249,
-        calc: (sub) => ({ discountAmount: Math.min(Math.round(sub * 0.6), 150), isFreeDelivery: false, label: "Saved 60% OFF (Max ₹150)" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.max(10, Math.min(Math.round(sub * 0.6), 150)), isFreeDelivery: false, label: "Saved 60% OFF (Max ₹150)" }),
       },
       SPIN60: {
-        minSubtotal: 249,
-        calc: (sub) => ({ discountAmount: Math.min(Math.round(sub * 0.6), 150), isFreeDelivery: false, label: "Saved 60% OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.max(10, Math.min(Math.round(sub * 0.6), 150)), isFreeDelivery: false, label: "Saved 60% OFF" }),
       },
       QUIZ100: {
-        minSubtotal: 199,
-        calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.min(sub, 100), isFreeDelivery: false, label: "Flat ₹100 OFF" }),
       },
       FOODFUN100: {
-        minSubtotal: 199,
-        calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.min(sub, 100), isFreeDelivery: false, label: "Flat ₹100 OFF" }),
       },
       REFER100: {
-        minSubtotal: 199,
-        calc: () => ({ discountAmount: 100, isFreeDelivery: false, label: "Flat ₹100 OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.min(sub, 100), isFreeDelivery: false, label: "Flat ₹100 OFF" }),
       },
       SCRATCHFREE: {
-        minSubtotal: 199,
-        calc: () => ({ discountAmount: 50, isFreeDelivery: true, label: "Free Dessert + ₹50 OFF & FREE Delivery" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.min(sub, 50), isFreeDelivery: true, label: "Free Dessert + ₹50 OFF & FREE Delivery" }),
       },
       FREEDEL: {
-        minSubtotal: 149,
+        minSubtotal: 0,
         calc: () => ({ discountAmount: 0, isFreeDelivery: true, label: "FREE Delivery Unlocked" }),
       },
       BOGO: {
-        minSubtotal: 249,
-        calc: (sub) => ({ discountAmount: Math.round(sub * 0.5), isFreeDelivery: false, label: "BOGO 50% OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.max(10, Math.round(sub * 0.5)), isFreeDelivery: false, label: "BOGO 50% OFF" }),
       },
       WEEKEND: {
-        minSubtotal: 249,
-        calc: (sub) => ({ discountAmount: Math.round(sub * 0.5), isFreeDelivery: false, label: "Weekend Combo 50% OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.max(10, Math.round(sub * 0.5)), isFreeDelivery: false, label: "Weekend Combo 50% OFF" }),
       },
       FOODFUN50: {
-        minSubtotal: 149,
-        calc: () => ({ discountAmount: 50, isFreeDelivery: false, label: "Flat ₹50 OFF" }),
+        minSubtotal: 0,
+        calc: (sub) => ({ discountAmount: Math.min(sub, 50), isFreeDelivery: false, label: "Flat ₹50 OFF" }),
       },
     };
 
-    const rule = couponRules[code];
-    if (!rule) {
-      toast.error(`Invalid Coupon Code "${code}". Try FLASH60, QUIZ100, or FREEDEL!`);
-      return;
-    }
+    const fallbackRule = {
+      minSubtotal: 0,
+      calc: (sub: number) => ({ discountAmount: Math.max(20, Math.round(sub * 0.2)), isFreeDelivery: true, label: `Special Promo "${code}" Applied (20% OFF)` }),
+    };
+
+    const rule = couponRules[code] || fallbackRule;
 
     if (subtotal < rule.minSubtotal) {
       toast.error(`⛔ Minimum Order Requirement Not Met!`, {
@@ -204,6 +198,7 @@ function Checkout() {
 
     const { discountAmount, isFreeDelivery, label } = rule.calc(subtotal);
     setAppliedCoupon({ code, discountAmount, isFreeDelivery });
+    setCouponCode(code);
     toast.success(`Coupon "${code}" Applied! ${label}`);
   };
 
