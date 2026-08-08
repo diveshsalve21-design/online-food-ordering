@@ -1,0 +1,7 @@
+{
+  "name": "online-food-ordering-root",
+  "private": true,
+  "scripts": {
+    "build": "cd online-food-frontend && npm install && npm run build && cp -r .vercel/output ../.vercel/output"
+  }
+}
