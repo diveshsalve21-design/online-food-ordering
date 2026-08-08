@@ -38,7 +38,7 @@ export const Route = createFileRoute("/orders")({
 // MULTIPLE DELIVERY RIDERS POOL
 const RIDERS = [
   { name: "Naman Sharma", vehicle: "Bajaj Pulsar (MH 05 EV 9821)", rating: "4.9 ★", phone: "+91 98201 44102", distance: "1.8 km away" },
-  { name: "Rashmin Oak", vehicle: "TVS Apache (MH 04 AB 3140)", rating: "4.8 ★", phone: "+91 98192 11093", distance: "2.3 km away" },
+  { name: "Rashmin Salve", vehicle: "TVS Apache (MH 04 AB 3140)", rating: "4.8 ★", phone: "+91 98192 11093", distance: "2.3 km away" },
   { name: "Vikram Singh", vehicle: "Hero Splendor (MH 02 CK 8812)", rating: "4.9 ★", phone: "+91 97693 55214", distance: "1.2 km away" },
   { name: "Sameer Khan", vehicle: "Honda Activa (MH 05 DF 4109)", rating: "4.7 ★", phone: "+91 99871 66380", distance: "3.1 km away" },
   { name: "Amit Deshmukh", vehicle: "Ather Electric 450X (MH 03 EV 2210)", rating: "5.0 ★", phone: "+91 98334 77192", distance: "0.9 km away" },
