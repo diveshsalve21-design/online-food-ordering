@@ -1,4 +1,3 @@
 {
-  "buildCommand": "cd online-food-frontend && npm install && npm run build && cp -r .vercel/output ../.vercel/output",
-  "framework": null
+  "buildCommand": "cd online-food-frontend && npm install && npm run build"
 }
