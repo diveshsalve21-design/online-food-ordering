@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Fusion — Master Code Explanation Guide (Mobile PDF)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 12mm 12mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0d1117;
+      color: #e6edf3;
+      padding: 15px;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      padding: 18px;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      border: 1px solid #374151;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f97316;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      font-weight: 600;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 6px;
+    }
+    .presenter-tag {
+      display: inline-block;
+      background: #f97316;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .code-block {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 10px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 11px;
+      color: #a5d6ff;
+      margin: 10px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    ul, ol {
+      margin-left: 18px;
+      margin-bottom: 10px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    .qa-box {
+      background: #0d1117;
+      border-left: 4px solid #10b981;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      border-radius: 0 8px 8px 0;
+    }
+    .qa-q {
+      font-weight: 700;
+      color: #fbbf24;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .qa-a {
+      color: #e6edf3;
+      font-size: 12px;
+    }
+    .highlight {
+      color: #f97316;
+      font-weight: 700;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title">🎓 FOOD FUSION — CODE EXPLANATION GUIDE</div>
+    <div class="subtitle">Master File-by-Line Breakdown & 30-Second Examiner Q&A Defense</div>
+  </div>
+
+  <!-- GOLDEN RULE -->
+  <div class="card" style="border-color: #f97316; background: #1f140e;">
+    <div class="card-title" style="color: #f97316;">⚡ GOLDEN RULE FOR ANSWERING SIR / EXAMINER (30 Secs)</div>
+    <p>When the teacher or examiner points to any file and asks <em>"What does this code do?"</em>, answer using this 3-step formula:</p>
+    <ol style="margin-top: 8px; font-weight: 600;">
+      <li><span class="highlight">1. Name Technology:</span> "Sir, this file is written in [Python / TypeScript / React]..."</li>
+      <li><span class="highlight">2. State Main Purpose:</span> "Its main role is to manage [REST API / Cart State / Coupon Validation / Live Tracking]..."</li>
+      <li><span class="highlight">3. Explain Mechanics:</span> "It uses [Flask handlers / LocalStorage hooks / Array filters / Dynamic hashing] to process data."</li>
+    </ol>
+  </div>
+
+  <!-- FILE 1: server.py -->
+  <div class="card">
+    <div class="card-title">🐍 1. BACKEND API — server.py</div>
+    <span class="presenter-tag">Presenter: Divesh Salve (Leader)</span>
+    <p><strong>Role:</strong> Python REST API server running on port 5000 that processes HTTP requests from the React frontend web app.</p>
+    
+    <div class="code-block"># CORS Headers (Prevents browser security blocks)
+def send_cors_headers(handler):
+    handler.send_header('Access-Control-Allow-Origin', '*')
+    handler.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+
+# GET Handler (do_GET)
+if parsed_path.path == '/api/health':
+    # Returns {"status": "online", "app": "Food Fusion API"}
+elif parsed_path.path == '/api/dishes':
+    # Returns list of food dishes formatted as JSON
+
+# POST Handler (do_POST)
+if parsed_path.path == '/api/orders':
+    # Parses order payload & generates Order ID: ORD_XXXXXX</div>
+    <ul>
+      <li><strong>CORS Fix:</strong> Allows <code>http://localhost:8080</code> frontend to talk to <code>http://localhost:5000</code> backend.</li>
+      <li><strong>JSON Serialization:</strong> Uses <code>json.dumps()</code> to format Python data structures into clean JSON strings.</li>
+    </ul>
+  </div>
+
+  <!-- FILE 2: data.ts -->
+  <div class="card">
+    <div class="card-title">🗄️ 2. DATA SCHEMAS & ARRAYS — src/lib/data.ts</div>
+    <span class="presenter-tag">Presenter: Divesh / Rashmin</span>
+    <p><strong>Role:</strong> Stores data models and arrays for food items, categories, and hotel partners.</p>
+    <ul>
+      <li><strong>categories Array:</strong> Stores category keys (<code>biryani</code>, <code>indian</code>, <code>pizza</code>, <code>burger</code>, <code>chinese</code>, <code>healthy</code>, <code>dessert</code>).</li>
+      <li><strong>dishes Array:</strong> Contains object schemas storing <code>id</code>, <code>name</code>, <code>desc</code>, <code>price</code>, <code>veg</code>, <code>category</code>, <code>calories</code>, <code>time</code>, <code>image</code>.</li>
+      <li><strong>Helper Functions:</strong> <code>getRestaurant(id)</code> uses <code>.find()</code>; <code>getRestaurantDishes(id)</code> uses <code>.filter()</code>.</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- FILE 3: cart.ts -->
+  <div class="card">
+    <div class="card-title">🛒 3. SHOPPING CART STATE — src/lib/cart.ts</div>
+    <span class="presenter-tag">Presenter: Rashmin Oak</span>
+    <p><strong>Role:</strong> Manages global cart state and client-side LocalStorage persistence.</p>
+    <ul>
+      <li><strong>useCart() Hook:</strong> Reactive hook maintaining array of <code>{ dish: Dish, quantity: number }</code>.</li>
+      <li><strong>LocalStorage Sync:</strong> Saves cart data under key <code>online_food_cart_v2</code> so cart persists on page refresh.</li>
+      <li><strong>Currency Formatter:</strong> <code>inr(amount)</code> formats numbers into Indian Rupees (<code>₹379</code>).</li>
+    </ul>
+  </div>
+
+  <!-- FILE 4: menu.tsx -->
+  <div class="card">
+    <div class="card-title">📱 4. MENU & FILTERING — src/routes/menu.tsx</div>
+    <span class="presenter-tag">Presenter: Rashmin Oak</span>
+    <p><strong>Role:</strong> Renders interactive menu, category tabs, veg/non-veg filter, and image lightbox modal.</p>
+    <div class="code-block">const list = useMemo(() => {
+  return menuDishes.filter((dish) => {
+    if (mode === "veg" && !dish.veg) return false;
+    if (mode === "nonveg" && dish.veg) return false;
+    if (cat !== "all" && dish.category !== cat) return false;
+    return !q || dish.name.toLowerCase().includes(q.toLowerCase());
+  });
+}, [mode, cat, q, menuDishes]);</div>
+    <p><strong>Key Concept:</strong> Uses <code>useMemo</code> for instant array filtering without unnecessary page re-renders.</p>
+  </div>
+
+  <!-- FILE 5: checkout.tsx -->
+  <div class="card">
+    <div class="card-title">💳 5. CHECKOUT & COUPON ENGINE — src/routes/checkout.tsx</div>
+    <span class="presenter-tag">Presenter: Divesh Salve</span>
+    <p><strong>Role:</strong> Validates address, applies coupons, simulates Razorpay payment, and auto-triggers 3D Spin Wheel popup.</p>
+    <ul>
+      <li><strong>handleApplyCoupon():</strong> Checks codes (<code>FLASH60</code>, <code>QUIZ100</code>, <code>FREEDEL</code>) with $0$ minimum subtotal; falls back to dynamic 20% discount.</li>
+      <li><strong>Auto Spin Popup useEffect:</strong> <code>placed = true</code> automatically opens Spin & Win rewards modal after 500ms.</li>
+    </ul>
+  </div>
+
+  <!-- FILE 6: orders.tsx -->
+  <div class="card">
+    <div class="card-title">🛵 6. ORDER TRACKING & RIDER HASHING — src/routes/orders.tsx</div>
+    <span class="presenter-tag">Presenter: Divesh Salve</span>
+    <p><strong>Role:</strong> Displays order history, live status timeline, and dynamically assigned delivery rider.</p>
+    <div class="code-block">function getRiderForOrder(orderId: string) {
+  let hash = 0;
+  for (let i = 0; i < orderId.length; i++) {
+    hash = orderId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % RIDERS.length;
+  return RIDERS[index];
+}</div>
+    <p><strong>Rider Assignment:</strong> Hashes unique <code>orderId</code> string into numeric index to consistently assign riders (e.g. <em>Rashmin Salve</em>, <em>Naman Sharma</em>).</p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- EXAMINER Q&A CHEATSHEET -->
+  <div class="card" style="border-color: #10b981;">
+    <div class="card-title" style="color: #10b981;">❓ TOP 10 EXAMINER QUESTIONS & 30-SECOND ANSWERS</div>
+    
+    <div class="qa-box">
+      <div class="qa-q">Q1: Where is your database stored?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, we use Supabase Cloud Database (PostgreSQL) for real-time order sync and hotel partner accounts. For instant client-side persistence like cart state and sessions, we use browser LocalStorage."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q2: How does Python backend communicate with React frontend?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, server.py runs an HTTP REST API server on port 5000. React sends fetch() requests to endpoints like /api/dishes and /api/orders. CORS headers are configured in Python to prevent security blocks."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q3: How does category filtering work on the Menu page?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, we use React's useMemo hook in menu.tsx. When a user selects a category like Biryani (cat=biryani), it executes an array .filter() on data.ts instantly without re-rendering the whole page."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q4: How do you assign delivery riders to orders?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, in orders.tsx we built a string hashing algorithm getRiderForOrder(orderId). It converts the Order ID into a numeric index using bitwise shifting to assign a rider consistently from our pool."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q5: Is your payment gateway real or simulated?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, it is an interactive Razorpay Test Mode simulation in checkout.tsx. It supports test UPI IDs, card validation, and Cash on Delivery with full receipt generation."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q6: How does the 3D Spin & Win Fortune Wheel work?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, in rewards-modal.tsx we calculate random degree rotations (rotation + 1440 + prizeIndex * 60) with CSS cubic-bezier transitions to simulate realistic 3D wheel physics."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q7: How does the AI Support Chatbot handle voice commands?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, it uses the browser's native Web Speech API — webkitSpeechRecognition for speech-to-text input and speechSynthesis for text-to-speech voice output."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q8: What is the difference between Customer Login and Hotel Login?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, Customer Login allows users to view order history and saved addresses, while Hotel Login (/hotel/login) grants access to the Hotel Partner Dashboard to manage dish availability and order progress."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q9: Why did you choose React + Vite instead of plain HTML?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, React provides component-based architecture and state management, while Vite ensures instant hot module reloading, superfast build performance, and TypeScript type safety."</div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-q">Q10: How do you handle dark mode styling?</div>
+      <div class="qa-a"><strong>Answer:</strong> "Sir, we use custom Tailwind CSS design tokens with glassmorphism effects, HSL tailwind colors, and backdrop-blur overlays to create a sleek dark theme."</div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

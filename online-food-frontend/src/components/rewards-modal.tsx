@@ -23,13 +23,12 @@ export function RewardsModal({ open, onOpenChange }: { open: boolean; onOpenChan
   const [spinsLeft, setSpinsLeft] = useState<number>(1);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedSpins = localStorage.getItem("foodfun_spins_count");
-      if (savedSpins !== null) {
-        setSpinsLeft(parseInt(savedSpins, 10));
-      } else {
-        localStorage.setItem("foodfun_spins_count", "1");
-        setSpinsLeft(1);
+    if (open) {
+      setWonPrize(null);
+      setSpinning(false);
+      setSpinsLeft(3);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("foodfun_spins_count", "3");
       }
     }
   }, [open]);
@@ -37,18 +36,17 @@ export function RewardsModal({ open, onOpenChange }: { open: boolean; onOpenChan
   const handleSpin = () => {
     if (spinning) return;
 
-    if (spinsLeft <= 0) {
-      toast.error("⛔ Spin Limit Reached!", {
-        description: "You have used your 1 Daily Spin. Place a food order to unlock +1 Bonus Spin!",
-      });
-      return;
+    let availableSpins = spinsLeft;
+    if (availableSpins <= 0) {
+      availableSpins = 3;
+      setSpinsLeft(3);
     }
 
     setSpinning(true);
     setWonPrize(null);
 
     // Decrement spins count
-    const nextSpins = spinsLeft - 1;
+    const nextSpins = availableSpins - 1;
     setSpinsLeft(nextSpins);
     if (typeof window !== "undefined") {
       localStorage.setItem("foodfun_spins_count", nextSpins.toString());
